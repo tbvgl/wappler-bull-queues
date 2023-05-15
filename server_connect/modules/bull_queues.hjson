@@ -1,0 +1,1217 @@
+[
+  {
+    "type": "bull_queues_queue_clean",
+    "module": "bull_queues",
+    "action": "queue_clean",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Clean queue @@var(actionName)@@",
+    "icon": "fad fa-car-wash comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "jobs_removed",
+        "type": "array"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue."
+          },
+          {
+            "name": "grace_period",
+            "optionName": "grace_period",
+            "title": "Grace period",
+            "type": "text",
+            "required": false,
+            "defaultValue": "0",
+            "serverDataBindings": true,
+            "help": "Clean jobs that entered this status over this period (in milliseconds)."
+          },
+          {
+            "name": "job_status",
+            "optionName": "job_status",
+            "title": "Job status",
+            "type": "droplist",
+            "values": [
+              {
+                "title": "Completed",
+                "value": "completed"
+              },
+              {
+                "title": "Delayed",
+                "value": "delayed"
+              },
+              {
+                "title": "Failed",
+                "value": "failed"
+              }
+            ],
+            "required": true,
+            "defaultValue": "all",
+            "serverDataBindings": true,
+            "help": "Clean for the selected status type."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_queue_pause",
+    "module": "bull_queues",
+    "action": "queue_pause",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Pause queue @@var(actionName)@@",
+    "icon": "far fa-pause-circle comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "response",
+        "type": "text"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_queue_resume",
+    "module": "bull_queues",
+    "action": "queue_resume",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Resume queue @@var(actionName)@@",
+    "icon": "far fa-play-circle comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "response",
+        "type": "text"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_create_queue",
+    "module": "bull_queues",
+    "action": "create_queue",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Create Queue @@var(actionName)@@",
+    "icon": "fad fa-layer-plus comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "response",
+        "type": "text"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue Config",
+        "variables": [
+          {
+            "name": "processor_type",
+            "optionName": "processor_type",
+            "title": "Processor type",
+            "type": "droplist",
+            "values": [
+              {
+                "title": "Library",
+                "value": "library"
+              },
+              {
+                "title": "API",
+                "value": "api"
+              }
+            ],
+            "required": false,
+            "defaultValue": "library",
+            "help": "The queue can only process Library files or API's.  Select one here."
+          },
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Name of this queue to be referenced by other actions."
+          },
+          {
+            "name": "limit_type",
+            "optionName": "limit_type",
+            "title": "Job limit type",
+            "type": "droplist",
+            "values": [
+              {
+                "title": "Concurrency",
+                "value": "concurrency",
+                "show": [
+                  "concurrent_jobs"
+                ],
+                "hide": [
+                  "max_jobs",
+                  "max_duration"
+                ]
+              },
+              {
+                "title": "Limiter",
+                "value": "limiter",
+                "show": [
+                  "max_jobs",
+                  "max_duration",
+                  "concurrent_jobs"
+                ]
+              }
+            ],
+            "defaultValue": "concurrency",
+            "help": "Choose your method of limiting jobs."
+          },
+          {
+            "name": "concurrent_jobs",
+            "optionName": "concurrent_jobs",
+            "title": "Number of concurrent jobs",
+            "type": "text",
+            "required": false,
+            "defaultValue": 5,
+            "serverDataBindings": true,
+            "help": "How many jobs are allowed to be run in parallel."
+          },
+          {
+            "name": "max_jobs",
+            "optionName": "max_jobs",
+            "title": "Max jobs",
+            "type": "text",
+            "required": false,
+            "defaultValue": null,
+            "serverDataBindings": true,
+            "help": "Maximum number of jobs processed "
+          },
+          {
+            "name": "max_duration",
+            "optionName": "max_duration",
+            "title": "Duration for Max Jobs",
+            "type": "text",
+            "required": false,
+            "defaultValue": null,
+            "serverDataBindings": true,
+            "help": "Duration period when calculating Max Jobs"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_add_job_api",
+    "module": "bull_queues",
+    "action": "add_job_api",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Add Job API @@var(actionName)@@",
+    "icon": "fas fa-plus-circle comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1",
+        "axios": "^0.25.0"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "job_id",
+        "type": "text"
+      },
+      {
+        "name": "queue",
+        "type": "text"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue Config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue that will process this job."
+          }
+        ]
+      },
+      {
+        "group": "Job Config",
+        "variables": [
+          {
+            "name": "api_file",
+            "optionName": "api_file",
+            "title": "API File",
+            "type": "file",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the API file that will process this job--found in your project's app/api folder (or its children)."
+          },
+          {
+            "name": "bindings",
+            "optionName": "bindings",
+            "key": "var",
+            "keyValue": "value",
+            "title": "API POST var's",
+            "type": "grid",
+            "defaultValue": {},
+            "serverDataBindings": true,
+            "columns": [
+              {
+                "field": "var",
+                "caption": "Variable",
+                "size": "30%",
+                "editable": {
+                  "type": "text"
+                }
+              },
+              {
+                "field": "value",
+                "caption": "Value",
+                "size": "70%",
+                "editable": {
+                  "type": "datapicker"
+                }
+              }
+            ]
+          },
+          {
+            "name": "priority",
+            "optionName": "priority",
+            "title": "Job Priority",
+            "type": "numberorstring",
+            "required": false,
+            "serverDataBindings": true,
+            "help": "Assign a priority to the job. Lower numbers have higher priority. Leave blank to avoid priority-based scheduling."
+          },
+          {
+            "name": "delay_ms",
+            "optionName": "delay_ms",
+            "title": "Minimum delay",
+            "type": "text",
+            "required": false,
+            "defaultValue": "0",
+            "serverDataBindings": true,
+            "help": "When the delay time has passed the job will be moved to the beginning of the queue and be processed as soon as a worker is idle."
+          },
+          {
+            "name": "attempts",
+            "optionName": "attempts",
+            "title": "Attempts",
+            "type": "text",
+            "required": false,
+            "defaultValue": 1,
+            "serverDataBindings": true,
+            "help": "Number of attempts to process job."
+          },
+          {
+            "name": "remove_on_complete",
+            "optionName": "remove_on_complete",
+            "title": "Remove on complete",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "serverDataBindings": true,
+            "help": "If ticked, removes the job from the queue if successfully completed.",
+            "show": [
+              "keep_completed_jobs"
+            ]
+          },
+          {
+            "name": "keep_completed_jobs",
+            "optionName": "keep_completed_jobs",
+            "title": "Keep completed jobs",
+            "type": "numberorstring",
+            "required": false,
+            "defaultValue": false,
+            "serverDataBindings": true,
+            "initDisplay": "none",
+            "help": "Keep the defined number of completed jobs in the queue."
+          },
+          {
+            "name": "remove_on_fail",
+            "optionName": "remove_on_fail",
+            "title": "Remove on fail",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "serverDataBindings": true,
+            "help": "If ticked, removes the job from the queue if the job failed.",
+            "show": [
+              "keep_failed_jobs"
+            ]
+          },
+          {
+            "name": "keep_failed_jobs",
+            "optionName": "keep_failed_jobs",
+            "title": "Keep failed jobs",
+            "type": "numberorstring",
+            "required": false,
+            "defaultValue": false,
+            "serverDataBindings": true,
+            "initDisplay": "none",
+            "help": "Keep the defined number of failed jobs in the queue."
+          },
+          {
+            "name": "repeatable",
+            "optionName": "repeatable",
+            "title": "Repeatable",
+            "type": "boolean",
+            "defaultValue": false,
+            "serverDataBindings": true,
+            "help": "If ticked, the job will repeat according to the specified pattern or interval.",
+            "show": [
+              "repeat_type"
+            ]
+          },
+          {
+            "name": "repeat_type",
+            "optionName": "repeat_type",
+            "title": "Repeat Type",
+            "type": "droplist",
+            "values": [
+              {
+                "title": "Cron",
+                "value": "cron",
+                "show": [
+                  "repeat_job_name",
+                  "repeat_pattern"
+                ],
+                "hide": [
+                  "repeat_limit",
+                  "repeat_interval"
+                ]
+              },
+              {
+                "title": "Interval",
+                "value": "interval",
+                "show": [
+                  "repeat_job_name",
+                  "repeat_limit",
+                  "repeat_interval"
+                ],
+                "hide": [
+                  "repeat_pattern"
+                ]
+              }
+            ],
+            "defaultValue": "",
+            "help": "Choose the repeat type."
+          },
+          {
+            "name": "repeat_job_name",
+            "optionName": "repeat_job_name",
+            "title": "Repeat Job Name",
+            "type": "text",
+            "required": false,
+            "serverDataBindings": true,
+            "initDisplay": "none",
+            "help": "Provide a name for the job. This is especially useful for repeatable jobs that may need to be removed later."
+          },
+          {
+            "name": "repeat_pattern",
+            "optionName": "repeat_pattern",
+            "title": "Repeat Pattern",
+            "type": "text",
+            "required": false,
+            "serverDataBindings": true,
+            "help": "Specify a cron pattern for job repetition. This will be ignored if the repeat interval is provided.",
+            "initDisplay": "none"
+          },
+          {
+            "name": "repeat_interval",
+            "optionName": "repeat_interval",
+            "title": "Repeat Interval",
+            "type": "numberorstring",
+            "required": false,
+            "serverDataBindings": true,
+            "help": "Specify a fixed interval (in milliseconds) for job repetition. This will be ignored if the repeat pattern is provided.",
+            "initDisplay": "none"
+          },
+          {
+            "name": "repeat_limit",
+            "optionName": "repeat_limit",
+            "title": "Repeat Limit",
+            "type": "numberorstring",
+            "required": false,
+            "serverDataBindings": true,
+            "help": "Specify the maximum number of times the job should repeat.",
+            "initDisplay": "none"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_queue_status",
+    "module": "bull_queues",
+    "action": "queue_status",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Queue Status @@var(actionName)@@",
+    "icon": "far fa-poll comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "jobs_count",
+        "type": "object",
+        "sub": [
+          {
+            "name": "waiting",
+            "type": "number"
+          },
+          {
+            "name": "active",
+            "type": "number"
+          },
+          {
+            "name": "completed",
+            "type": "number"
+          },
+          {
+            "name": "failed",
+            "type": "number"
+          },
+          {
+            "name": "delayed",
+            "type": "number"
+          },
+          {
+            "name": "paused",
+            "type": "number"
+          },
+          {
+            "name": "queue",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "name": "limiter",
+        "type": "object",
+        "sub": [
+          {
+            "name": "max",
+            "type": "number"
+          },
+          {
+            "name": "duration",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "workers_attached",
+        "type": "boolean"
+      },
+      {
+        "name": "worker_count",
+        "type": "number"
+      },
+      {
+        "name": "worker_type",
+        "type": "text"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_get_jobs",
+    "module": "bull_queues",
+    "action": "get_jobs",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Get jobs @@var(actionName)@@",
+    "icon": "fad fa-album-collection comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "jobs",
+        "type": "array"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue."
+          },
+          {
+            "name": "job_status",
+            "optionName": "job_status",
+            "title": "Job status",
+            "type": "droplist",
+            "values": [
+              {
+                "title": "Active",
+                "value": "active"
+              },
+              {
+                "title": "Completed",
+                "value": "completed"
+              },
+              {
+                "title": "Delayed",
+                "value": "delayed"
+              },
+              {
+                "title": "Failed",
+                "value": "failed"
+              },
+              {
+                "title": "Waiting",
+                "value": "waiting"
+              }
+            ],
+            "required": true,
+            "defaultValue": "active",
+            "serverDataBindings": true,
+            "help": "Select the status."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_job_state",
+    "module": "bull_queues",
+    "action": "job_state",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Job State @@var(actionName)@@",
+    "icon": "fad fa-spinner comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "job",
+        "type": "object"
+      },
+      {
+        "name": "job_state",
+        "type": "text"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Job Data",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue that holds this job."
+          },
+          {
+            "name": "job_id",
+            "optionName": "job_id",
+            "title": "JobID",
+            "type": "text",
+            "required": true,
+            "serverDataBindings": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_retry_job",
+    "module": "bull_queues",
+    "action": "retry_job",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Retry job @@var(actionName)@@",
+    "icon": "fad fa-spinner comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "response",
+        "type": "text"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Job Data",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue that holds this job."
+          },
+          {
+            "name": "job_id",
+            "optionName": "job_id",
+            "title": "JobID",
+            "type": "text",
+            "required": true,
+            "serverDataBindings": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_destroy_queue",
+    "module": "bull_queues",
+    "action": "destroy_queue",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Destroy Queue @@var(actionName)@@",
+    "icon": "fad fa-shredder comp-exec",
+    "usedModules": {
+      "node": {
+        "bull": "^4.6.2",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
+      }
+    },
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "response",
+        "type": "test"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue to be destroyed."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_get_repeatable_jobs",
+    "module": "bull_queues",
+    "action": "get_repeatable_jobs",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Get repeatable jobs @@var(actionName)@@",
+    "icon": "fad fa-album-collection comp-exec",
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "jobs",
+        "type": "array"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_remove_repeatable_jobs",
+    "module": "bull_queues",
+    "action": "remove_repeatable_job",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Remove repeatable job @@var(actionName)@@",
+    "icon": "fad fa-trash-alt comp-exec",
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "success",
+        "type": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "text"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue."
+          },
+          {
+            "name": "job_name",
+            "optionName": "job_name",
+            "title": "Job Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Name of the job to be removed."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_remove_job",
+    "module": "bull_queues",
+    "action": "remove_job",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Remove job @@var(actionName)@@",
+    "icon": "fad fa-album-collection comp-exec",
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "success",
+        "type": "boolean"
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "group": "Queue config",
+        "variables": [
+          {
+            "name": "queue_name",
+            "optionName": "queue_name",
+            "title": "Queue name",
+            "type": "text",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Select the queue."
+          },
+          {
+            "name": "job_id",
+            "optionName": "job_id",
+            "title": "Job id",
+            "type": "numberorstring",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Input the id of the job you want to remove."
+          }
+        ]
+      }
+    ]
+  }
+]
