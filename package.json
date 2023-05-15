@@ -1,0 +1,27 @@
+{
+    "name": "wappler-bull-queues",
+    "version": "0.0.0-semantic-release",
+    "description": "Allows for the creation of one to many queues to offload the execution of Wappler library tasks",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tbvgl/wappler-bull-queues.git"
+    },
+    "keywords": [
+        "wappler"
+    ],
+    "author": "Tobias Vogel",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/tbvgl/wappler-bull-queues/issues"
+    },
+    "homepage": "https://github.com/tbvgl/wappler-bull-queues#readme",
+    "devDependencies": {
+        "@commitlint/cli": "^17.6.3",
+        "@commitlint/config-conventional": "^17.6.3",
+        "@semantic-release/changelog": "github:semantic-release/changelog",
+        "@semantic-release/git": "github:semantic-release/git",
+        "husky": "^8.0.3",
+        "semantic-release": "^21.0.2"
+    }
+}
