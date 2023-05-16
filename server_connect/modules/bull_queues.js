@@ -4,7 +4,7 @@
 const { toSystemPath } = require("../../../lib/core/path");
 const Queue = require("bull");
 const config = require("../../../lib/setup/config");
-const { logMessage } = require("./advanced-logger");
+const { logMessage } = require("wappler-advanced-logger");
 
 const defaultConcurrency = 5;
 var redisReady = false;

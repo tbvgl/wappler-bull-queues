@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const App = require('../../../lib/core/app');
-const { logMessage } = require("./advanced-logger");
+const { logMessage } = require("wappler-advanced-logger");
 const bullLog = process.env.LOG_BULL_JOBS ? process.env.LOG_BULL_JOBS === "enabled" : false;
 
 module.exports = async(job, done) => {
