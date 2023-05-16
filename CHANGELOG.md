@@ -1,3 +1,17 @@
+## [1.4.1-release.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.4.1-release.1...v1.4.1-release.2) (2023-05-16)
+
+
+### Bug Fixes
+
+* automatic installation ([7732899](https://github.com/tbvgl/wappler-bull-queues/commit/7732899f1ed6a18520327b29f84351811c66e1d6))
+
+## [1.4.1-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.4.0...v1.4.1-release.1) (2023-05-16)
+
+
+### Bug Fixes
+
+* folder creation fails if it exists ([285a886](https://github.com/tbvgl/wappler-bull-queues/commit/285a88615882972cfdaf5dbadf99d676be61e552))
+
 # [1.4.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.3.3...v1.4.0) (2023-05-16)
 
 
