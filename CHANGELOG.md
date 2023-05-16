@@ -1,3 +1,10 @@
+# [1.3.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.2.0...v1.3.0-release.1) (2023-05-16)
+
+
+### Features
+
+* logging ([0c007ec](https://github.com/tbvgl/wappler-bull-queues/commit/0c007ec94d0b403bc8115f562e7a8fc7dc0b184a))
+
 # [1.2.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.1.0...v1.2.0) (2023-05-15)
 
 

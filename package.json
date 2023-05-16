@@ -8,7 +8,9 @@
         "url": "git+https://github.com/tbvgl/wappler-bull-queues.git"
     },
     "keywords": [
-        "wappler"
+        "wappler-extension",
+        "server-connect",
+        "bull-queues"
     ],
     "author": "Tobias Vogel",
     "license": "MIT",
@@ -23,5 +25,8 @@
         "@semantic-release/git": "github:semantic-release/git",
         "husky": "^8.0.3",
         "semantic-release": "^21.0.2"
+    },
+    "dependencies": {
+        "wappler-advanced-logger": "^1.0.0"
     }
 }
