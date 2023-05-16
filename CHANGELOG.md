@@ -1,3 +1,10 @@
+# [1.4.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.3.3...v1.4.0-release.1) (2023-05-16)
+
+
+### Features
+
+* automatic installation ([d16bfd9](https://github.com/tbvgl/wappler-bull-queues/commit/d16bfd95f856fb922935af8bc6df4e8edf4a8fa2))
+
 ## [1.3.3](https://github.com/tbvgl/wappler-bull-queues/compare/v1.3.2...v1.3.3) (2023-05-16)
 
 

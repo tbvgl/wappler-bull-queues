@@ -3,6 +3,9 @@
     "version": "0.0.0-semantic-release",
     "description": "Allows for the creation of one to many queues to offload the execution of Wappler library tasks",
     "main": "index.js",
+    "scripts": {
+        "postinstall": "node scripts/copyFiles.js"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/tbvgl/wappler-bull-queues.git"
@@ -27,6 +30,7 @@
         "semantic-release": "^21.0.2"
     },
     "dependencies": {
+        "fs-extra": "^11.1.1",
         "bull": "^4.10.4",
         "wappler-advanced-logger": "^1.0.0"
     }
