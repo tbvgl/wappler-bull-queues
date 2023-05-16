@@ -1,3 +1,17 @@
+## [1.3.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.3.1...v1.3.2) (2023-05-16)
+
+
+### Bug Fixes
+
+* wrong logger import for upcoming Wappler version ([53f3632](https://github.com/tbvgl/wappler-bull-queues/commit/53f3632f41599e8a6712ae54bb2266db4d32f265))
+
+## [1.3.2-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.3.1...v1.3.2-release.1) (2023-05-16)
+
+
+### Bug Fixes
+
+* wrong logger import for upcoming Wappler version ([53f3632](https://github.com/tbvgl/wappler-bull-queues/commit/53f3632f41599e8a6712ae54bb2266db4d32f265))
+
 ## [1.3.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.3.0...v1.3.1) (2023-05-16)
 
 
