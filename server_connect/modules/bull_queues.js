@@ -634,7 +634,12 @@ exports.job_state = async function(options) {
     }
 };
 
+
 exports.add_job_api = async function(options) {
+    await logMessage({
+        message: "debugging_server",
+        log_level: "warn"
+    });
     await logMessage({
         message: "Add job api start",
         log_level: "debug",
@@ -785,11 +790,14 @@ exports.add_job_api = async function(options) {
                 if (Object.keys(repeatOptions).length !== 0) {
                     jobOptions.repeat = repeatOptions;
                 }
-
+                let session = this.res.locals.forwardedHeaders;
+                let headers = this.res.locals.forwardedSession;
                 let jobPayload = {
                     jobData: jobData,
                     action: apiName,
                     baseURL: base_url,
+                    headers: headers,
+                    session: session,
                 };
 
                 if (jobName) {
