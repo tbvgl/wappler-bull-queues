@@ -347,6 +347,16 @@
             "defaultValue": null,
             "serverDataBindings": true,
             "help": "Duration period when calculating Max Jobs"
+          },
+          {
+            "name": "autoStart",
+            "optionName": "autoStart",
+            "title": "Autostart",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "serverDataBindings": true,
+            "help": "Automatically initialize the queue on application start."
           }
         ]
       }
@@ -1209,6 +1219,110 @@
             "defaultValue": "",
             "serverDataBindings": true,
             "help": "Input the id of the job you want to remove."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_list_autostart_queues",
+    "module": "bull_queues",
+    "action": "list_autostart_queues",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "List Autostart Queues",
+    "icon": "fad fa-list-alt comp-exec",
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "queues",
+        "type": "object",
+        "sub": [
+          {
+            "name": "queueName",
+            "type": "text"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "sub": [
+              {
+                "name": "autoStart",
+                "type": "boolean"
+              },
+              {
+                "name": "processor_type",
+                "type": "text"
+              },
+              {
+                "name": "queue_name",
+                "type": "text"
+              },
+              {
+                "name": "limit_type",
+                "type": "text"
+              },
+              {
+                "name": "concurrent_jobs",
+                "type": "number"
+              },
+              {
+                "name": "max_jobs",
+                "type": "number"
+              },
+              {
+                "name": "max_duration",
+                "type": "number"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_remove_autostart_queue",
+    "module": "bull_queues",
+    "action": "remove_autostart_queue",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Remove Autostart Queue",
+    "icon": "fad fa-minus-circle comp-exec",
+    "properties": [
+      {
+        "group": "Queue name",
+        "variables": [
+          {
+            "name": "queueName",
+            "optionName": "queueName",
+            "title": "Queue name",
+            "type": "numberorstring",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Enter the name of the queue to remove."
           }
         ]
       }

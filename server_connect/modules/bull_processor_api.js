@@ -17,14 +17,14 @@ module.exports = async(job, done) => {
         }
 
         await logMessage({
-            message: `Sending request to API: ${action}`,
+            message: `Running action ${action}`,
             details: jobData,
             log_level: "debug",
         });
 
         if (bullLog) {
             await job.log(
-                `Sending request to API: ${action} with data: ${JSON.stringify(
+                `Running action ${action} with data: ${JSON.stringify(
                     jobData
                 )}`
             );
