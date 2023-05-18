@@ -146,6 +146,13 @@ exports.create_queue = async function(options) {
     if (options.autoStart) {
         const redisInstance = getRedisInstance();
         await redisInstance.set(`autostartqueues:${queueName}`, JSON.stringify(options));
+    } else {
+        const redisInstance = getRedisInstance();
+        const key = `autostartqueues:${queueName}`;
+        const exists = await redisInstance.exists(key);
+        if (exists === 1) {
+            await redisInstance.del(key);
+        }
     }
 
     let jobscount = await bullQueues[queueName]
