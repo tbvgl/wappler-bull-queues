@@ -5,12 +5,26 @@ const { toSystemPath } = require("../../../lib/core/path");
 const Queue = require("bull");
 const config = require("../../../lib/setup/config");
 const { logMessage } = require("./advanced-logger");
+const ioredis = require("ioredis");
 
 const defaultConcurrency = 5;
 var redisReady = false;
 
 if (process.env.REDIS_HOST || typeof global.redisClient !== "undefined") {
     redisReady = true;
+}
+
+function getRedisInstance(db) {
+    return new ioredis({
+        port: process.env.REDIS_PORT || global.redisClient.options.port,
+        host: process.env.REDIS_HOST || global.redisClient.options.host,
+        db: db || process.env.REDIS_BULL_QUEUE_DB || 2,
+        ...(process.env.REDIS_PASSWORD || global.redisClient.options.password ? {
+            password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
+        } : {}),
+        ...(process.env.REDIS_USER || global.redisClient.options.user ? { username: process.env.REDIS_USER || global.redisClient.options.user } : {}),
+        ...(process.env.REDIS_TLS || global.redisClient.options.tls ? { tls: {} } : {}),
+    });
 }
 
 const defaultQueueOptions = {
@@ -128,6 +142,11 @@ exports.create_queue = async function(options) {
     processorTypes[queueName] = processor_type;
     workerCounts[queueName] = concurrent_jobs;
     bullQueues[queueName].process('*', concurrent_jobs, processorPath);
+
+    if (options.autoStart) {
+        const redisInstance = getRedisInstance();
+        await redisInstance.set(`autostartqueues:${queueName}`, JSON.stringify(options));
+    }
 
     let jobscount = await bullQueues[queueName]
         .getJobCounts()
@@ -790,8 +809,8 @@ exports.add_job_api = async function(options) {
                 if (Object.keys(repeatOptions).length !== 0) {
                     jobOptions.repeat = repeatOptions;
                 }
-                let session = this.res.locals.forwardedHeaders;
-                let headers = this.res.locals.forwardedSession;
+                let session = this.res.locals.forwardedSession;
+                let headers = this.res.locals.forwardedHeaders;
                 let jobPayload = {
                     jobData: jobData,
                     action: apiName,
@@ -1088,5 +1107,73 @@ exports.remove_job = async function(options) {
         });
 
         return responseMessages.noredis;
+    }
+};
+
+exports.list_autostart_queues = async function() {
+    const redis = getRedisInstance();
+    let queues = [];
+
+    try {
+        const queueKeys = await redis.keys('autostartqueues:*');
+        if (queueKeys.length) {
+            for (let queueKey of queueKeys) {
+                const optionsString = await redis.get(queueKey);
+                if (optionsString) {
+                    const options = JSON.parse(optionsString);
+                    queues.push({
+                        queueName: queueKey.replace('autostartqueues:', ''),
+                        options: options
+                    });
+                }
+            }
+        }
+        await logMessage({
+            message: "Successfully listed all autostart queues",
+            log_level: "info",
+            details: queues
+        });
+    } catch (error) {
+        await logMessage({
+            message: `Failed to list autostart queues: ${error.message}`,
+            log_level: "error"
+        });
+    }
+
+    return queues;
+};
+
+
+exports.remove_autostart_queue = async function(options) {
+    const redis = getRedisInstance();
+    let queueName = this.parseRequired(
+        options.queueName,
+        "string",
+        "Queue name is required"
+    );
+
+    try {
+        const key = `autostartqueues:${queueName}`;
+        const exists = await redis.exists(key);
+        if (exists === 0) {
+            await logMessage({
+                message: `Queue ${queueName} does not exist.`,
+                log_level: "warn",
+                details: { queueName },
+            });
+            return;
+        }
+        await redis.del(key);
+
+        await logMessage({
+            message: `Successfully removed autostart queue ${queueName}`,
+            log_level: "info",
+            details: { queueName },
+        });
+    } catch (error) {
+        await logMessage({
+            message: `Failed to remove autostart queue ${queueName}: ${error.message}`,
+            log_level: "error"
+        });
     }
 };
