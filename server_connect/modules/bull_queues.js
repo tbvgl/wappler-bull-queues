@@ -19,60 +19,38 @@ function getRedisInstance(db) {
         port: process.env.REDIS_PORT || global.redisClient.options.port,
         host: process.env.REDIS_HOST || global.redisClient.options.host,
         db: db || process.env.REDIS_BULL_QUEUE_DB || 2,
-        ...(process.env.REDIS_PASSWORD || global.redisClient.options.password ?
-            {
-                password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
-            } :
-            {}),
-        ...(process.env.REDIS_USER || global.redisClient.options.user ?
-            { username: process.env.REDIS_USER || global.redisClient.options.user } :
-            {}),
-        ...(process.env.REDIS_TLS || global.redisClient.options.tls ?
-            { tls: {} } :
-            {}),
+        ...(process.env.REDIS_PASSWORD || global.redisClient.options.password ? {
+            password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
+        } : {}),
+        ...(process.env.REDIS_USER || global.redisClient.options.user ? { username: process.env.REDIS_USER || global.redisClient.options.user } : {}),
+        ...(process.env.REDIS_TLS || global.redisClient.options.tls ? { tls: {} } : {}),
     });
 }
 
 const defaultQueueOptions = {
     redis: {
         port: process.env.REDIS_PORT || global.redisClient ?
-            global.redisClient.options.port :
-            {},
+            global.redisClient.options.port : {},
         host: process.env.REDIS_HOST || global.redisClient ?
-            global.redisClient.options.host :
-            {},
+            global.redisClient.options.host : {},
         db: process.env.REDIS_BULL_QUEUE_DB || 2,
         ...(process.env.REDIS_PASSWORD || global.redisClient ?
-            global.redisClient.options.password ?
-            {
+            global.redisClient.options.password ? {
                 password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
-            } :
-            {} :
-            {}),
+            } : {} : {}),
         ...(process.env.REDIS_USER || global.redisClient ?
-            global.redisClient.options.user ?
-            {
+            global.redisClient.options.user ? {
                 username: process.env.REDIS_USER || global.redisClient.options.user,
-            } :
-            {} :
-            {}),
+            } : {} : {}),
         ...(process.env.REDIS_TLS || global.redisClient ?
-            global.redisClient.options.tls ?
-            { tls: {} } :
-            {} :
-            {}),
-        ...(process.env.REDIS_PREFIX ?
-            { prefix: `{${process.env.REDIS_PREFIX}}` } :
-            {}),
-        ...(process.env.REDIS_BULL_METRICS ?
-            {
-                metrics: {
-                    maxDataPoints: process.env.REDIS_BULL_METRICS_TIME ?
-                        Queue.utils.MetricsTime[process.env.REDIS_BULL_METRICS_TIME] :
-                        Queue.utils.MetricsTime.TWO_WEEKS,
-                },
-            } :
-            {}),
+            global.redisClient.options.tls ? { tls: {} } : {} : {}),
+        ...(process.env.REDIS_PREFIX ? { prefix: `{${process.env.REDIS_PREFIX}}` } : {}),
+        ...(process.env.REDIS_BULL_METRICS ? {
+            metrics: {
+                maxDataPoints: process.env.REDIS_BULL_METRICS_TIME ?
+                    Queue.utils.MetricsTime[process.env.REDIS_BULL_METRICS_TIME] : Queue.utils.MetricsTime.TWO_WEEKS,
+            },
+        } : {}),
     },
 };
 
@@ -90,22 +68,6 @@ function setupQueue(queueName) {
         bullQueues[queueName] = new Queue(queueName, defaultQueueOptions);
     }
 }
-
-exports.bq_logging = async function(options) {
-    console_logging = this.parseOptional(
-        options.console_logging,
-        "string",
-        "error"
-    );
-    file_logging = this.parseOptional(options.file_logging, "string", "none");
-    bullLog = this.parseOptional(options.bull_logging, "boolean", false);
-
-    bq_logger = bullLogging.setupWinston(console_logging, file_logging, "BullQ");
-
-    bq_logger.info("Logging configuration updated");
-
-    return { response: "Logging configuration updated" };
-};
 
 exports.create_queue = async function(options) {
     if (!redisReady) {
@@ -643,11 +605,21 @@ exports.retry_job = async function(options) {
 };
 
 exports.job_state = async function(options) {
-    bq_logger.debug("Job state start");
+    await logMessage({
+        message: "Job state start",
+        log_level: "debug",
+    });
 
     if (redisReady) {
-        bq_logger.debug("Redis ready");
-        bq_logger.debug("Options: " + JSON.stringify(options));
+        await logMessage({
+            message: "Redis ready",
+            log_level: "debug",
+        });
+        await logMessage({
+            message: "Options",
+            log_level: "debug",
+            details: options,
+        });
 
         let queueName = this.parseRequired(
             options.queue_name,
@@ -663,33 +635,50 @@ exports.job_state = async function(options) {
                 "string",
                 "parameter job id is required."
             );
-            bq_logger.debug(
-                "Queue: " + queueName + " exists, so get job state of jobID: " + job_id
-            );
+            await logMessage({
+                message: `Queue: ${queueName} exists, so get job state of jobID: ${job_id}`,
+                log_level: "debug",
+            });
 
             let job = await jobState.getJob(job_id);
 
+            let job_state;
+
             if (job) {
-                bq_logger.info("Returned job state for jobID: " + job_id);
+                await logMessage({
+                    message: `Returned job state for jobID: ${job_id}`,
+                    log_level: "info",
+                });
                 job_state = await job.getState();
             } else {
-                bq_logger.warn("JobID " + job_id + " not found");
+                await logMessage({
+                    message: `JobID ${job_id} not found`,
+                    log_level: "warn",
+                });
                 job_state = "Job not found";
             }
 
             return { job: job, job_state: job_state };
         } else {
-            bq_logger.error(
-                "Queue: " + queueName + " does not exist so nothing returned"
-            );
+            await logMessage({
+                message: `Queue: ${queueName} does not exist so nothing returned`,
+                log_level: "error",
+            });
             return responseMessages["noqueue"];
         }
     } else {
-        bq_logger.error("No Redis connection");
-        bq_logger.debug("Create queue finish");
+        await logMessage({
+            message: "No Redis connection",
+            log_level: "error",
+        });
+        await logMessage({
+            message: "Create queue finish",
+            log_level: "debug",
+        });
         return responseMessages.noredis;
     }
 };
+
 
 exports.add_job_api = async function(options) {
     await logMessage({
