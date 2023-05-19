@@ -5,7 +5,7 @@ const bullLog = process.env.LOG_BULL_JOBS ? process.env.LOG_BULL_JOBS === "enabl
 
 module.exports = async(job, done) => {
     try {
-        const { action, jobData } = job.data;
+        const { action, jobData, headers, session } = job.data;
 
         await logMessage({
             message: `Processing job ${job.id} with API: ${action}`,
@@ -17,21 +17,21 @@ module.exports = async(job, done) => {
         }
 
         await logMessage({
-            message: `Sending request to API: ${action}`,
+            message: `Running action ${action}`,
             details: jobData,
             log_level: "debug",
         });
 
         if (bullLog) {
             await job.log(
-                `Sending request to API: ${action} with data: ${JSON.stringify(
+                `Running action ${action} with data: ${JSON.stringify(
                     jobData
                 )}`
             );
         }
 
         try {
-            const app = new App({ method: `POST`, body: jobData, session: {}, cookies: {}, signedCookies: {}, query: {}, headers: {} });
+            const app = new App({ method: `POST`, body: jobData, session: session, cookies: {}, signedCookies: {}, query: {}, headers: headers });
             const actionFile = await fs.readJSON(`app/api/${action}.json`);
 
             await app.define(actionFile, true);

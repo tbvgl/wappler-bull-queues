@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.4.1...v1.4.2) (2023-05-16)
+
+
+### Bug Fixes
+
+* automatic installation fails if nested extension ([5b803c8](https://github.com/tbvgl/wappler-bull-queues/commit/5b803c8e4882b63712f0bf16f28e63fac6b191b6))
+
 ## [1.4.2-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.4.1...v1.4.2-release.1) (2023-05-16)
 
 
