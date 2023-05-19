@@ -264,25 +264,6 @@
         "group": "Queue Config",
         "variables": [
           {
-            "name": "processor_type",
-            "optionName": "processor_type",
-            "title": "Processor type",
-            "type": "droplist",
-            "values": [
-              {
-                "title": "Library",
-                "value": "library"
-              },
-              {
-                "title": "API",
-                "value": "api"
-              }
-            ],
-            "required": false,
-            "defaultValue": "library",
-            "help": "The queue can only process Library files or API's.  Select one here."
-          },
-          {
             "name": "queue_name",
             "optionName": "queue_name",
             "title": "Queue name",
@@ -402,8 +383,7 @@
             "title": "Name",
             "type": "text",
             "required": true,
-            "defaultValue": "",
-            
+            "defaultValue": ""
           },
           {
             "name": "output",
@@ -514,7 +494,7 @@
             "optionName": "backoff_type",
             "title": "Backoff Strategy",
             "type": "droplist",
-            "required": "true",
+            "required": false,
             "values": [
               {
                 "title": "Fixed",
