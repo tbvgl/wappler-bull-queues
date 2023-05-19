@@ -28,6 +28,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "cleanQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -122,6 +123,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "pauseQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -182,6 +184,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "resumeQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -242,6 +245,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "createQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -259,25 +263,6 @@
       {
         "group": "Queue Config",
         "variables": [
-          {
-            "name": "processor_type",
-            "optionName": "processor_type",
-            "title": "Processor type",
-            "type": "droplist",
-            "values": [
-              {
-                "title": "Library",
-                "value": "library"
-              },
-              {
-                "title": "API",
-                "value": "api"
-              }
-            ],
-            "required": false,
-            "defaultValue": "library",
-            "help": "The queue can only process Library files or API's.  Select one here."
-          },
           {
             "name": "queue_name",
             "optionName": "queue_name",
@@ -347,6 +332,14 @@
             "defaultValue": null,
             "serverDataBindings": true,
             "help": "Duration period when calculating Max Jobs"
+          },
+          {
+            "name": "autoStart",
+            "optionName": "autoStart",
+            "title": "Autostart",
+            "type": "boolean",
+            "required": false,
+            "help": "Automatically initialize the queue on application start."
           }
         ]
       }
@@ -358,7 +351,7 @@
     "action": "add_job_api",
     "groupTitle": "Bull Queues",
     "groupIcon": "fas fa-skull-cow comp-exec",
-    "title": "Add Job API @@var(actionName)@@",
+    "title": "Add Job @@var(actionName)@@",
     "icon": "fas fa-plus-circle comp-exec",
     "usedModules": {
       "node": {
@@ -386,6 +379,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "addJob",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -484,6 +478,40 @@
             "defaultValue": 1,
             "serverDataBindings": true,
             "help": "Number of attempts to process job."
+          },
+          {
+            "name": "attempts_delay",
+            "optionName": "attempts_delay",
+            "title": "Delay Between Attempts",
+            "type": "text",
+            "required": false,
+            "defaultValue": "0",
+            "serverDataBindings": true,
+            "help": "Specify the delay (in milliseconds) between job attempts."
+          },
+          {
+            "name": "backoff_type",
+            "optionName": "backoff_type",
+            "title": "Backoff Strategy",
+            "type": "droplist",
+            "required": false,
+            "values": [
+              {
+                "title": "Fixed",
+                "value": "fixed"
+              },
+              {
+                "title": "Exponential",
+                "value": "exponential"
+              }
+            ],
+            "defaultValue": "fixed",
+            "required": false,
+            "serverDataBindings": true,
+            "help": "Choose the backoff strategy for retry attempts. 'Fixed' strategy will retry attempts after a fixed delay. 'Exponential' strategy will increase the delay exponentially.",
+            "show": [
+              "attempts"
+            ]
           },
           {
             "name": "remove_on_complete",
@@ -708,6 +736,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "queueStatus",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -768,6 +797,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "getJobs",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -864,6 +894,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "jobState",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -932,6 +963,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "retryJob",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1000,6 +1032,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "destroyQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1053,6 +1086,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "getRepeatableJobs",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1110,6 +1144,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "removeRepeatableJob",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1173,6 +1208,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "removeJob",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1209,6 +1245,111 @@
             "defaultValue": "",
             "serverDataBindings": true,
             "help": "Input the id of the job you want to remove."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_list_autostart_queues",
+    "module": "bull_queues",
+    "action": "list_autostart_queues",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "List Autostart Queues",
+    "icon": "fad fa-list-alt comp-exec",
+    "dataPickObject": true,
+    "dataScheme": [
+      {
+        "name": "queues",
+        "type": "object",
+        "sub": [
+          {
+            "name": "queueName",
+            "type": "text"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "sub": [
+              {
+                "name": "autoStart",
+                "type": "boolean"
+              },
+              {
+                "name": "processor_type",
+                "type": "text"
+              },
+              {
+                "name": "queue_name",
+                "type": "text"
+              },
+              {
+                "name": "limit_type",
+                "type": "text"
+              },
+              {
+                "name": "concurrent_jobs",
+                "type": "number"
+              },
+              {
+                "name": "max_jobs",
+                "type": "number"
+              },
+              {
+                "name": "max_duration",
+                "type": "number"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "properties": [
+      {
+        "group": "Step properties",
+        "variables": [
+          {
+            "name": "actionName",
+            "optionName": "name",
+            "baseName": "listAutostartQueues",
+            "title": "Name",
+            "type": "text",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "output",
+            "optionName": "output",
+            "title": "Output",
+            "type": "boolean",
+            "defaultValue": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "bull_queues_remove_autostart_queue",
+    "module": "bull_queues",
+    "action": "remove_autostart_queue",
+    "groupTitle": "Bull Queues",
+    "groupIcon": "fas fa-skull-cow comp-exec",
+    "title": "Remove Autostart Queue",
+    "icon": "fad fa-minus-circle comp-exec",
+    "properties": [
+      {
+        "group": "Queue name",
+        "variables": [
+          {
+            "name": "queueName",
+            "optionName": "queueName",
+            "title": "Queue name",
+            "type": "numberorstring",
+            "required": true,
+            "defaultValue": "",
+            "serverDataBindings": true,
+            "help": "Enter the name of the queue to remove."
           }
         ]
       }

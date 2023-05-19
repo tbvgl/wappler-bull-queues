@@ -5,12 +5,26 @@ const { toSystemPath } = require("../../../lib/core/path");
 const Queue = require("bull");
 const config = require("../../../lib/setup/config");
 const { logMessage } = require("./advanced-logger");
+const ioredis = require("ioredis");
 
 const defaultConcurrency = 5;
 var redisReady = false;
 
 if (process.env.REDIS_HOST || typeof global.redisClient !== "undefined") {
     redisReady = true;
+}
+
+function getRedisInstance(db) {
+    return new ioredis({
+        port: process.env.REDIS_PORT || global.redisClient.options.port,
+        host: process.env.REDIS_HOST || global.redisClient.options.host,
+        db: db || process.env.REDIS_BULL_QUEUE_DB || 2,
+        ...(process.env.REDIS_PASSWORD || global.redisClient.options.password ? {
+            password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
+        } : {}),
+        ...(process.env.REDIS_USER || global.redisClient.options.user ? { username: process.env.REDIS_USER || global.redisClient.options.user } : {}),
+        ...(process.env.REDIS_TLS || global.redisClient.options.tls ? { tls: {} } : {}),
+    });
 }
 
 const defaultQueueOptions = {
@@ -55,22 +69,6 @@ function setupQueue(queueName) {
     }
 }
 
-exports.bq_logging = async function(options) {
-    console_logging = this.parseOptional(
-        options.console_logging,
-        "string",
-        "error"
-    );
-    file_logging = this.parseOptional(options.file_logging, "string", "none");
-    bullLog = this.parseOptional(options.bull_logging, "boolean", false);
-
-    bq_logger = bullLogging.setupWinston(console_logging, file_logging, "BullQ");
-
-    bq_logger.info("Logging configuration updated");
-
-    return { response: "Logging configuration updated" };
-};
-
 exports.create_queue = async function(options) {
     if (!redisReady) {
         await logMessage({ message: "No Redis connection", log_level: "error" });
@@ -83,6 +81,25 @@ exports.create_queue = async function(options) {
         "Queue name is required"
     );
 
+    let autostart;
+
+    autostart = options.autoStart || false;
+
+    if (autostart) {
+        const redisInstance = getRedisInstance();
+        await redisInstance.set(
+            `autostartqueues:${queueName}`,
+            JSON.stringify(options)
+        );
+    } else {
+        const redisInstance = getRedisInstance();
+        const key = `autostartqueues:${queueName}`;
+        const exists = await redisInstance.exists(key);
+        if (exists === 1) {
+            await redisInstance.del(key);
+        }
+    }
+
     if (workerCounts[queueName]) {
         await logMessage({
             message: `Queue ${queueName} NOT created -- it already exists.`,
@@ -92,7 +109,9 @@ exports.create_queue = async function(options) {
     }
 
     let processor_type = "api";
-    let processorPath = toSystemPath("/extensions/server_connect/modules/bull_processor_api.js");
+    let processorPath = toSystemPath(
+        "/extensions/server_connect/modules/bull_processor_api.js"
+    );
 
     let concurrent_jobs = parseInt(
         this.parseOptional(options.concurrent_jobs, "*", defaultConcurrency)
@@ -127,7 +146,7 @@ exports.create_queue = async function(options) {
     bullQueues[queueName] = new Queue(queueName, queueOptions);
     processorTypes[queueName] = processor_type;
     workerCounts[queueName] = concurrent_jobs;
-    bullQueues[queueName].process('*', concurrent_jobs, processorPath);
+    bullQueues[queueName].process("*", concurrent_jobs, processorPath);
 
     let jobscount = await bullQueues[queueName]
         .getJobCounts()
@@ -586,11 +605,21 @@ exports.retry_job = async function(options) {
 };
 
 exports.job_state = async function(options) {
-    bq_logger.debug("Job state start");
+    await logMessage({
+        message: "Job state start",
+        log_level: "debug",
+    });
 
     if (redisReady) {
-        bq_logger.debug("Redis ready");
-        bq_logger.debug("Options: " + JSON.stringify(options));
+        await logMessage({
+            message: "Redis ready",
+            log_level: "debug",
+        });
+        await logMessage({
+            message: "Options",
+            log_level: "debug",
+            details: options,
+        });
 
         let queueName = this.parseRequired(
             options.queue_name,
@@ -606,35 +635,56 @@ exports.job_state = async function(options) {
                 "string",
                 "parameter job id is required."
             );
-            bq_logger.debug(
-                "Queue: " + queueName + " exists, so get job state of jobID: " + job_id
-            );
+            await logMessage({
+                message: `Queue: ${queueName} exists, so get job state of jobID: ${job_id}`,
+                log_level: "debug",
+            });
 
             let job = await jobState.getJob(job_id);
 
+            let job_state;
+
             if (job) {
-                bq_logger.info("Returned job state for jobID: " + job_id);
+                await logMessage({
+                    message: `Returned job state for jobID: ${job_id}`,
+                    log_level: "info",
+                });
                 job_state = await job.getState();
             } else {
-                bq_logger.warn("JobID " + job_id + " not found");
+                await logMessage({
+                    message: `JobID ${job_id} not found`,
+                    log_level: "warn",
+                });
                 job_state = "Job not found";
             }
 
             return { job: job, job_state: job_state };
         } else {
-            bq_logger.error(
-                "Queue: " + queueName + " does not exist so nothing returned"
-            );
+            await logMessage({
+                message: `Queue: ${queueName} does not exist so nothing returned`,
+                log_level: "error",
+            });
             return responseMessages["noqueue"];
         }
     } else {
-        bq_logger.error("No Redis connection");
-        bq_logger.debug("Create queue finish");
+        await logMessage({
+            message: "No Redis connection",
+            log_level: "error",
+        });
+        await logMessage({
+            message: "Create queue finish",
+            log_level: "debug",
+        });
         return responseMessages.noredis;
     }
 };
 
+
 exports.add_job_api = async function(options) {
+    await logMessage({
+        message: "debugging_server",
+        log_level: "warn",
+    });
     await logMessage({
         message: "Add job api start",
         log_level: "debug",
@@ -690,6 +740,26 @@ exports.add_job_api = async function(options) {
         let attempts = parseInt(this.parseOptional(options.attempts, "*", 1));
         if (attempts <= 0) {
             throw new Error("The number of attempts must be a positive integer.");
+        }
+
+        let attempts_delay = parseInt(
+            this.parseOptional(options.attempts_delay, "*", 0)
+        );
+        if (attempts_delay < 0) {
+            throw new Error(
+                "The delay between attempts must be a non-negative integer."
+            );
+        }
+
+        let backoff_type = this.parseOptional(
+            options.backoff_type,
+            "string",
+            "fixed"
+        );
+        if (backoff_type !== "fixed" && backoff_type !== "exponential") {
+            throw new Error(
+                "The backoff type must be either 'fixed' or 'exponential'."
+            );
         }
 
         let priority = parseInt(this.parseOptional(options.priority, "number"));
@@ -771,6 +841,13 @@ exports.add_job_api = async function(options) {
                     attempts: attempts,
                 };
 
+                if (attempts > 1) {
+                    jobOptions.backoff = {
+                        type: backoff_type,
+                        delay: attempts_delay,
+                    };
+                }
+
                 if (priority !== null) {
                     jobOptions.priority = priority;
                 }
@@ -785,11 +862,14 @@ exports.add_job_api = async function(options) {
                 if (Object.keys(repeatOptions).length !== 0) {
                     jobOptions.repeat = repeatOptions;
                 }
-
+                let session = this.res.locals.forwardedSession;
+                let headers = this.res.locals.forwardedHeaders;
                 let jobPayload = {
                     jobData: jobData,
                     action: apiName,
                     baseURL: base_url,
+                    headers: headers,
+                    session: session,
                 };
 
                 if (jobName) {
@@ -957,7 +1037,7 @@ exports.remove_repeatable_job = async function(options) {
             });
 
             let repeatableJobs = await bullQueues[queueName].getRepeatableJobs();
-            let job = repeatableJobs.find(job => job.name === jobName);
+            let job = repeatableJobs.find((job) => job.name === jobName);
 
             if (job) {
                 try {
@@ -1080,5 +1160,72 @@ exports.remove_job = async function(options) {
         });
 
         return responseMessages.noredis;
+    }
+};
+
+exports.list_autostart_queues = async function() {
+    const redis = getRedisInstance();
+    let queues = [];
+
+    try {
+        const queueKeys = await redis.keys("autostartqueues:*");
+        if (queueKeys.length) {
+            for (let queueKey of queueKeys) {
+                const optionsString = await redis.get(queueKey);
+                if (optionsString) {
+                    const options = JSON.parse(optionsString);
+                    queues.push({
+                        queueName: queueKey.replace("autostartqueues:", ""),
+                        options: options,
+                    });
+                }
+            }
+        }
+        await logMessage({
+            message: "Successfully listed all autostart queues",
+            log_level: "info",
+            details: queues,
+        });
+    } catch (error) {
+        await logMessage({
+            message: `Failed to list autostart queues: ${error.message}`,
+            log_level: "error",
+        });
+    }
+
+    return queues;
+};
+
+exports.remove_autostart_queue = async function(options) {
+    const redis = getRedisInstance();
+    let queueName = this.parseRequired(
+        options.queueName,
+        "string",
+        "Queue name is required"
+    );
+
+    try {
+        const key = `autostartqueues:${queueName}`;
+        const exists = await redis.exists(key);
+        if (exists === 0) {
+            await logMessage({
+                message: `Queue ${queueName} does not exist.`,
+                log_level: "warn",
+                details: { queueName },
+            });
+            return;
+        }
+        await redis.del(key);
+
+        await logMessage({
+            message: `Successfully removed autostart queue ${queueName}`,
+            log_level: "info",
+            details: { queueName },
+        });
+    } catch (error) {
+        await logMessage({
+            message: `Failed to remove autostart queue ${queueName}: ${error.message}`,
+            log_level: "error",
+        });
     }
 };
