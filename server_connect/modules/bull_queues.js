@@ -97,6 +97,23 @@ exports.create_queue = async function(options) {
         "Queue name is required"
     );
 
+    let autostart;
+
+    autostart = options.autoStart || false;
+
+
+    if (autostart) {
+        const redisInstance = getRedisInstance();
+        await redisInstance.set(`autostartqueues:${queueName}`, JSON.stringify(options));
+    } else {
+        const redisInstance = getRedisInstance();
+        const key = `autostartqueues:${queueName}`;
+        const exists = await redisInstance.exists(key);
+        if (exists === 1) {
+            await redisInstance.del(key);
+        }
+    }
+
     if (workerCounts[queueName]) {
         await logMessage({
             message: `Queue ${queueName} NOT created -- it already exists.`,
@@ -142,18 +159,6 @@ exports.create_queue = async function(options) {
     processorTypes[queueName] = processor_type;
     workerCounts[queueName] = concurrent_jobs;
     bullQueues[queueName].process('*', concurrent_jobs, processorPath);
-
-    if (options.autoStart) {
-        const redisInstance = getRedisInstance();
-        await redisInstance.set(`autostartqueues:${queueName}`, JSON.stringify(options));
-    } else {
-        const redisInstance = getRedisInstance();
-        const key = `autostartqueues:${queueName}`;
-        const exists = await redisInstance.exists(key);
-        if (exists === 1) {
-            await redisInstance.del(key);
-        }
-    }
 
     let jobscount = await bullQueues[queueName]
         .getJobCounts()
@@ -660,11 +665,10 @@ exports.job_state = async function(options) {
     }
 };
 
-
 exports.add_job_api = async function(options) {
     await logMessage({
         message: "debugging_server",
-        log_level: "warn"
+        log_level: "warn",
     });
     await logMessage({
         message: "Add job api start",
@@ -991,7 +995,7 @@ exports.remove_repeatable_job = async function(options) {
             });
 
             let repeatableJobs = await bullQueues[queueName].getRepeatableJobs();
-            let job = repeatableJobs.find(job => job.name === jobName);
+            let job = repeatableJobs.find((job) => job.name === jobName);
 
             if (job) {
                 try {
@@ -1122,15 +1126,15 @@ exports.list_autostart_queues = async function() {
     let queues = [];
 
     try {
-        const queueKeys = await redis.keys('autostartqueues:*');
+        const queueKeys = await redis.keys("autostartqueues:*");
         if (queueKeys.length) {
             for (let queueKey of queueKeys) {
                 const optionsString = await redis.get(queueKey);
                 if (optionsString) {
                     const options = JSON.parse(optionsString);
                     queues.push({
-                        queueName: queueKey.replace('autostartqueues:', ''),
-                        options: options
+                        queueName: queueKey.replace("autostartqueues:", ""),
+                        options: options,
                     });
                 }
             }
@@ -1138,18 +1142,17 @@ exports.list_autostart_queues = async function() {
         await logMessage({
             message: "Successfully listed all autostart queues",
             log_level: "info",
-            details: queues
+            details: queues,
         });
     } catch (error) {
         await logMessage({
             message: `Failed to list autostart queues: ${error.message}`,
-            log_level: "error"
+            log_level: "error",
         });
     }
 
     return queues;
 };
-
 
 exports.remove_autostart_queue = async function(options) {
     const redis = getRedisInstance();
@@ -1180,7 +1183,7 @@ exports.remove_autostart_queue = async function(options) {
     } catch (error) {
         await logMessage({
             message: `Failed to remove autostart queue ${queueName}: ${error.message}`,
-            log_level: "error"
+            log_level: "error",
         });
     }
 };
