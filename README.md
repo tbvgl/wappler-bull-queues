@@ -35,7 +35,7 @@ The advanced logger will be automatically installed in your project if you insta
 ### Create Queue
 * Creates a queue with optional parameters.
 * Responds with a message indicating the result.
-* Features autostarting of queues.
+* Features autostarting of queues to autostart queues when the application starts.
 
 Queue Parameters:
 * **Queue name** - Used to specify a unique queue. This is also used by actions to specify the queue.
