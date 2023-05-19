@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.5.0...v1.5.1) (2023-05-19)
+
+
+### Bug Fixes
+
+* version ([4bf753e](https://github.com/tbvgl/wappler-bull-queues/commit/4bf753eeb7115cf6a89a1c407467c0e59e414555))
+
 ## [1.5.1-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.5.0...v1.5.1-release.1) (2023-05-19)
 
 
