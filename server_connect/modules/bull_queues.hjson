@@ -351,7 +351,7 @@
     "action": "add_job_api",
     "groupTitle": "Bull Queues",
     "groupIcon": "fas fa-skull-cow comp-exec",
-    "title": "Add Job API @@var(actionName)@@",
+    "title": "Add Job @@var(actionName)@@",
     "icon": "fas fa-plus-circle comp-exec",
     "usedModules": {
       "node": {
