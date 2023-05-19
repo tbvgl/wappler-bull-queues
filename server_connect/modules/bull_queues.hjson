@@ -7,12 +7,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Clean queue @@var(actionName)@@",
     "icon": "fad fa-car-wash comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
@@ -102,12 +97,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Pause queue @@var(actionName)@@",
     "icon": "far fa-pause-circle comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
@@ -163,12 +153,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Resume queue @@var(actionName)@@",
     "icon": "far fa-play-circle comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
@@ -224,12 +209,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Create Queue @@var(actionName)@@",
     "icon": "fad fa-layer-plus comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
@@ -659,12 +639,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Queue Status @@var(actionName)@@",
     "icon": "far fa-poll comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
@@ -776,12 +751,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Get jobs @@var(actionName)@@",
     "icon": "fad fa-album-collection comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
@@ -869,12 +839,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Job State @@var(actionName)@@",
     "icon": "fad fa-spinner comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
@@ -942,12 +907,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Retry job @@var(actionName)@@",
     "icon": "fad fa-spinner comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
@@ -1011,12 +971,7 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Destroy Queue @@var(actionName)@@",
     "icon": "fad fa-shredder comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1"
-      }
+
     },
     "dataPickObject": true,
     "dataScheme": [
