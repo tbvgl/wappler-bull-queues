@@ -1,3 +1,37 @@
+# [1.5.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.4.2...v1.5.0) (2023-05-19)
+
+
+### Bug Fixes
+
+* auto-start not updating if queue already exists ([5eaa390](https://github.com/tbvgl/wappler-bull-queues/commit/5eaa390683508015ea8b199b3ec838f41c6c99c4))
+
+
+### Features
+
+*  Auto-starting queues ([5237ac8](https://github.com/tbvgl/wappler-bull-queues/commit/5237ac899151c00ea372df9a2adb101610d37410))
+* Backoff strategy ([18ce266](https://github.com/tbvgl/wappler-bull-queues/commit/18ce266b7f40353a5934c82f879baadc693a0fbe))
+* Forward headers and session ([69789a4](https://github.com/tbvgl/wappler-bull-queues/commit/69789a4c6e21d3b1778c7e6be463560761a74fd5))
+* Forward headers and sessions to job processes ([3baba22](https://github.com/tbvgl/wappler-bull-queues/commit/3baba22bee68cffa17c1440bd05286482ab285fd))
+* Remove auto-starting queue from list if queue is recreated with autoStart = false ([d1cc032](https://github.com/tbvgl/wappler-bull-queues/commit/d1cc032000ec6e9b3cedee30d772a58cfaed84c0))
+* session and header forwarding & auto-starting queues ([65729ce](https://github.com/tbvgl/wappler-bull-queues/commit/65729ceaa7b4569fcee589207d5dfa86a56d4617))
+
+# [1.5.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.4.2...v1.5.0-release.1) (2023-05-19)
+
+
+### Bug Fixes
+
+* auto-start not updating if queue already exists ([5eaa390](https://github.com/tbvgl/wappler-bull-queues/commit/5eaa390683508015ea8b199b3ec838f41c6c99c4))
+
+
+### Features
+
+*  Auto-starting queues ([5237ac8](https://github.com/tbvgl/wappler-bull-queues/commit/5237ac899151c00ea372df9a2adb101610d37410))
+* Backoff strategy ([18ce266](https://github.com/tbvgl/wappler-bull-queues/commit/18ce266b7f40353a5934c82f879baadc693a0fbe))
+* Forward headers and session ([69789a4](https://github.com/tbvgl/wappler-bull-queues/commit/69789a4c6e21d3b1778c7e6be463560761a74fd5))
+* Forward headers and sessions to job processes ([3baba22](https://github.com/tbvgl/wappler-bull-queues/commit/3baba22bee68cffa17c1440bd05286482ab285fd))
+* Remove auto-starting queue from list if queue is recreated with autoStart = false ([d1cc032](https://github.com/tbvgl/wappler-bull-queues/commit/d1cc032000ec6e9b3cedee30d772a58cfaed84c0))
+* session and header forwarding & auto-starting queues ([65729ce](https://github.com/tbvgl/wappler-bull-queues/commit/65729ceaa7b4569fcee589207d5dfa86a56d4617))
+
 ## [1.4.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.4.1...v1.4.2) (2023-05-16)
 
 
