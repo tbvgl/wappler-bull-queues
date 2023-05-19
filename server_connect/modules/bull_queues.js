@@ -19,38 +19,60 @@ function getRedisInstance(db) {
         port: process.env.REDIS_PORT || global.redisClient.options.port,
         host: process.env.REDIS_HOST || global.redisClient.options.host,
         db: db || process.env.REDIS_BULL_QUEUE_DB || 2,
-        ...(process.env.REDIS_PASSWORD || global.redisClient.options.password ? {
-            password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
-        } : {}),
-        ...(process.env.REDIS_USER || global.redisClient.options.user ? { username: process.env.REDIS_USER || global.redisClient.options.user } : {}),
-        ...(process.env.REDIS_TLS || global.redisClient.options.tls ? { tls: {} } : {}),
+        ...(process.env.REDIS_PASSWORD || global.redisClient.options.password ?
+            {
+                password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
+            } :
+            {}),
+        ...(process.env.REDIS_USER || global.redisClient.options.user ?
+            { username: process.env.REDIS_USER || global.redisClient.options.user } :
+            {}),
+        ...(process.env.REDIS_TLS || global.redisClient.options.tls ?
+            { tls: {} } :
+            {}),
     });
 }
 
 const defaultQueueOptions = {
     redis: {
         port: process.env.REDIS_PORT || global.redisClient ?
-            global.redisClient.options.port : {},
+            global.redisClient.options.port :
+            {},
         host: process.env.REDIS_HOST || global.redisClient ?
-            global.redisClient.options.host : {},
+            global.redisClient.options.host :
+            {},
         db: process.env.REDIS_BULL_QUEUE_DB || 2,
         ...(process.env.REDIS_PASSWORD || global.redisClient ?
-            global.redisClient.options.password ? {
+            global.redisClient.options.password ?
+            {
                 password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
-            } : {} : {}),
+            } :
+            {} :
+            {}),
         ...(process.env.REDIS_USER || global.redisClient ?
-            global.redisClient.options.user ? {
+            global.redisClient.options.user ?
+            {
                 username: process.env.REDIS_USER || global.redisClient.options.user,
-            } : {} : {}),
+            } :
+            {} :
+            {}),
         ...(process.env.REDIS_TLS || global.redisClient ?
-            global.redisClient.options.tls ? { tls: {} } : {} : {}),
-        ...(process.env.REDIS_PREFIX ? { prefix: `{${process.env.REDIS_PREFIX}}` } : {}),
-        ...(process.env.REDIS_BULL_METRICS ? {
-            metrics: {
-                maxDataPoints: process.env.REDIS_BULL_METRICS_TIME ?
-                    Queue.utils.MetricsTime[process.env.REDIS_BULL_METRICS_TIME] : Queue.utils.MetricsTime.TWO_WEEKS,
-            },
-        } : {}),
+            global.redisClient.options.tls ?
+            { tls: {} } :
+            {} :
+            {}),
+        ...(process.env.REDIS_PREFIX ?
+            { prefix: `{${process.env.REDIS_PREFIX}}` } :
+            {}),
+        ...(process.env.REDIS_BULL_METRICS ?
+            {
+                metrics: {
+                    maxDataPoints: process.env.REDIS_BULL_METRICS_TIME ?
+                        Queue.utils.MetricsTime[process.env.REDIS_BULL_METRICS_TIME] :
+                        Queue.utils.MetricsTime.TWO_WEEKS,
+                },
+            } :
+            {}),
     },
 };
 
@@ -101,10 +123,12 @@ exports.create_queue = async function(options) {
 
     autostart = options.autoStart || false;
 
-
     if (autostart) {
         const redisInstance = getRedisInstance();
-        await redisInstance.set(`autostartqueues:${queueName}`, JSON.stringify(options));
+        await redisInstance.set(
+            `autostartqueues:${queueName}`,
+            JSON.stringify(options)
+        );
     } else {
         const redisInstance = getRedisInstance();
         const key = `autostartqueues:${queueName}`;
@@ -123,7 +147,9 @@ exports.create_queue = async function(options) {
     }
 
     let processor_type = "api";
-    let processorPath = toSystemPath("/extensions/server_connect/modules/bull_processor_api.js");
+    let processorPath = toSystemPath(
+        "/extensions/server_connect/modules/bull_processor_api.js"
+    );
 
     let concurrent_jobs = parseInt(
         this.parseOptional(options.concurrent_jobs, "*", defaultConcurrency)
@@ -158,7 +184,7 @@ exports.create_queue = async function(options) {
     bullQueues[queueName] = new Queue(queueName, queueOptions);
     processorTypes[queueName] = processor_type;
     workerCounts[queueName] = concurrent_jobs;
-    bullQueues[queueName].process('*', concurrent_jobs, processorPath);
+    bullQueues[queueName].process("*", concurrent_jobs, processorPath);
 
     let jobscount = await bullQueues[queueName]
         .getJobCounts()
@@ -727,6 +753,26 @@ exports.add_job_api = async function(options) {
             throw new Error("The number of attempts must be a positive integer.");
         }
 
+        let attempts_delay = parseInt(
+            this.parseOptional(options.attempts_delay, "*", 0)
+        );
+        if (attempts_delay < 0) {
+            throw new Error(
+                "The delay between attempts must be a non-negative integer."
+            );
+        }
+
+        let backoff_type = this.parseOptional(
+            options.backoff_type,
+            "string",
+            "fixed"
+        );
+        if (backoff_type !== "fixed" && backoff_type !== "exponential") {
+            throw new Error(
+                "The backoff type must be either 'fixed' or 'exponential'."
+            );
+        }
+
         let priority = parseInt(this.parseOptional(options.priority, "number"));
         let repeat = this.parseOptional(options.repeatable, "boolean", false);
 
@@ -805,6 +851,13 @@ exports.add_job_api = async function(options) {
                     removeOnFail: remove_on_fail,
                     attempts: attempts,
                 };
+
+                if (attempts > 1) {
+                    jobOptions.backoff = {
+                        type: backoff_type,
+                        delay: attempts_delay,
+                    };
+                }
 
                 if (priority !== null) {
                     jobOptions.priority = priority;

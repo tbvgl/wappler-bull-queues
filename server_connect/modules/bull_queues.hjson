@@ -28,6 +28,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "cleanQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -122,6 +123,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "pauseQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -182,6 +184,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "resumeQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -242,6 +245,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "createQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -354,8 +358,6 @@
             "title": "Autostart",
             "type": "boolean",
             "required": false,
-            "defaultValue": false,
-            "serverDataBindings": true,
             "help": "Automatically initialize the queue on application start."
           }
         ]
@@ -396,10 +398,12 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "addJob",
             "title": "Name",
             "type": "text",
             "required": true,
-            "defaultValue": ""
+            "defaultValue": "",
+            
           },
           {
             "name": "output",
@@ -494,6 +498,40 @@
             "defaultValue": 1,
             "serverDataBindings": true,
             "help": "Number of attempts to process job."
+          },
+          {
+            "name": "attempts_delay",
+            "optionName": "attempts_delay",
+            "title": "Delay Between Attempts",
+            "type": "text",
+            "required": false,
+            "defaultValue": "0",
+            "serverDataBindings": true,
+            "help": "Specify the delay (in milliseconds) between job attempts."
+          },
+          {
+            "name": "backoff_type",
+            "optionName": "backoff_type",
+            "title": "Backoff Strategy",
+            "type": "droplist",
+            "required": "true",
+            "values": [
+              {
+                "title": "Fixed",
+                "value": "fixed"
+              },
+              {
+                "title": "Exponential",
+                "value": "exponential"
+              }
+            ],
+            "defaultValue": "fixed",
+            "required": false,
+            "serverDataBindings": true,
+            "help": "Choose the backoff strategy for retry attempts. 'Fixed' strategy will retry attempts after a fixed delay. 'Exponential' strategy will increase the delay exponentially.",
+            "show": [
+              "attempts"
+            ]
           },
           {
             "name": "remove_on_complete",
@@ -718,6 +756,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "queueStatus",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -778,6 +817,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "getJobs",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -874,6 +914,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "jobState",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -942,6 +983,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "retryJob",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1010,6 +1052,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "destroyQueue",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1063,6 +1106,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "getRepeatableJobs",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1120,6 +1164,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "removeRepeatableJob",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1183,6 +1228,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "removeJob",
             "title": "Name",
             "type": "text",
             "required": true,
@@ -1286,6 +1332,7 @@
           {
             "name": "actionName",
             "optionName": "name",
+            "baseName": "listAutostartQueues",
             "title": "Name",
             "type": "text",
             "required": true,
