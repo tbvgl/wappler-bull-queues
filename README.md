@@ -23,6 +23,7 @@ Allows for the creation of one to many queues to offload the execution of Wapple
 * REDIS_PREFIX: The prefix for the database. This is useful if you need to connect to a clusert.
 * REDIS_BULL_METRICS: Boolean. Enables Bull metrics collection which can be visualised with a GUI like https://taskforce.sh/
 * REDIS_BULL_METRICS_TIME: The timeframe for metric collection. Defaults to TWO_WEEKS if metrics are enabled
+* LOG_BULL_JOBS: Enables job processor logs which are added to the job object.
 
 ## Logging
 
