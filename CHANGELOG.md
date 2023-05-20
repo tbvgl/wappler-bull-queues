@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.5.1...v1.5.2) (2023-05-20)
+
+
+### Bug Fixes
+
+* hjson formatting error ([231224d](https://github.com/tbvgl/wappler-bull-queues/commit/231224dbaf79067f907bc7d99dcc398a33571a7c))
+
 ## [1.5.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.5.0...v1.5.1) (2023-05-19)
 
 
