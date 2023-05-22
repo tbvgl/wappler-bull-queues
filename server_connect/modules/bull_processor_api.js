@@ -1,11 +1,13 @@
 const fs = require('fs-extra');
 const App = require('../../../lib/core/app');
 const { logMessage } = require("./advanced-logger");
+const { global } = require('../../../lib/setup/config');
+const { io } = require('../../../lib/server');
 const bullLog = process.env.LOG_BULL_JOBS ? process.env.LOG_BULL_JOBS === "enabled" : false;
-
 module.exports = async(job, done) => {
     try {
-        const { action, jobData, headers, session } = job.data;
+
+        const { action, jobData, headers, session} = job.data;
 
         await logMessage({
             message: `Processing job ${job.id} with API: ${action}`,
@@ -31,11 +33,32 @@ module.exports = async(job, done) => {
         }
 
         try {
-            const app = new App({ method: `POST`, body: jobData, session: session, cookies: {}, signedCookies: {}, query: {}, headers: headers });
+
+            const createMockRes = () => {
+                return {
+                    status(n) {
+                        return this;
+                    },
+                    send(data) {
+                    },
+                    json(data) {
+                    },
+                    set(field, val) {
+                    },
+                };
+            };
+            const app = new App({
+                method: `POST`,
+                body: jobData,
+                session: session,
+                cookies: {},
+                signedCookies: {},
+                query: {},
+                headers: headers,
+              }, createMockRes());
             const actionFile = await fs.readJSON(`app/api/${action}.json`);
 
             await app.define(actionFile, true);
-            console.log(app.data)
 
             await logMessage({
                 message: `Job ${job.id} completed successfully`,

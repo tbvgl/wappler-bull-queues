@@ -70,6 +70,7 @@ function setupQueue(queueName) {
 }
 
 exports.create_queue = async function(options) {
+     
     if (!redisReady) {
         await logMessage({ message: "No Redis connection", log_level: "error" });
         return responseMessages.noredis;
