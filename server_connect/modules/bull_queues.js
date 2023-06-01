@@ -1,5 +1,5 @@
 // JavaScript Document
-// Ken Truesdale - ken@uniqueideas.com & Tobias Vogel - hello@tobi-vogel.com
+// Tobias Vogel - hello@tobi-vogel.com & Ken Truesdale - ken@uniqueideas.com
 
 const { toSystemPath } = require("../../../lib/core/path");
 const Queue = require("bull");
@@ -70,7 +70,8 @@ function setupQueue(queueName) {
 }
 
 exports.create_queue = async function(options) {
-     
+
+    options = this.parse(options);
     if (!redisReady) {
         await logMessage({ message: "No Redis connection", log_level: "error" });
         return responseMessages.noredis;
@@ -680,12 +681,8 @@ exports.job_state = async function(options) {
     }
 };
 
-
 exports.add_job_api = async function(options) {
-    await logMessage({
-        message: "debugging_server",
-        log_level: "warn",
-    });
+
     await logMessage({
         message: "Add job api start",
         log_level: "debug",
@@ -800,13 +797,15 @@ exports.add_job_api = async function(options) {
                 "parameter api_file is required."
             );
             let delay_ms = parseInt(this.parseOptional(options.delay_ms, "*", 0));
+            let serverName = (this.global.data.$_SERVER && this.global.data.$_SERVER.SERVER_NAME) || "localhost";
 
             let base_url =
                 this.global.data.$_SERVER.REQUEST_PROTOCOL +
                 "://" +
-                this.global.data.$_SERVER.SERVER_NAME +
+                serverName +
                 "/api/";
-            if (this.global.data.$_SERVER.SERVER_NAME.includes("localhost")) {
+
+            if (serverName.includes("localhost")) {
                 base_url = "http://localhost:" + config.port + "/api/";
             }
 
@@ -832,7 +831,7 @@ exports.add_job_api = async function(options) {
                 await logMessage({
                     message: "Add job to queue",
                     log_level: "debug",
-                    details: bullQueues[queueName],
+                    //details: bullQueues[queueName],
                 });
 
                 let jobOptions = {
@@ -863,8 +862,10 @@ exports.add_job_api = async function(options) {
                 if (Object.keys(repeatOptions).length !== 0) {
                     jobOptions.repeat = repeatOptions;
                 }
-                let session = this.res.locals.forwardedSession;
-                let headers = this.res.locals.forwardedHeaders;
+                let session = this.req.session;
+
+                let headers = this.req.headers;
+
                 let jobPayload = {
                     jobData: jobData,
                     action: apiName,
