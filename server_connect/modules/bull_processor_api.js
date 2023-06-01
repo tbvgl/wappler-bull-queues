@@ -1,7 +1,12 @@
 const fs = require('fs-extra');
 const App = require('../../../lib/core/app');
 const { logMessage } = require("./advanced-logger");
+const { globals } = require('../../../lib/setup/config');
+const { io } = require('../../../lib/server');
+
 const bullLog = process.env.LOG_BULL_JOBS ? process.env.LOG_BULL_JOBS === "enabled" : false;
+
+global.db = {};
 
 module.exports = async(job, done) => {
     try {
@@ -31,11 +36,29 @@ module.exports = async(job, done) => {
         }
 
         try {
-            const app = new App({ method: `POST`, body: jobData, session: session, cookies: {}, signedCookies: {}, query: {}, headers: headers });
-            const actionFile = await fs.readJSON(`app/api/${action}.json`);
+            const createMockRes = () => {
+                return {
+                    status(n) {
+                        return this;
+                    },
+                    send(data) {},
+                    json(data) {},
+                    set(field, val) {},
+                };
+            };
 
+            const app = new App({
+                method: `POST`,
+                body: jobData,
+                session: session,
+                cookies: {},
+                signedCookies: {},
+                query: {},
+                headers: headers,
+            }, createMockRes());
+
+            const actionFile = await fs.readJSON(`app/api/${action}.json`);
             await app.define(actionFile, true);
-            console.log(app.data)
 
             await logMessage({
                 message: `Job ${job.id} completed successfully`,
@@ -45,6 +68,26 @@ module.exports = async(job, done) => {
             if (bullLog) {
                 await job.log(`Job ${job.id} completed successfully.`);
             }
+
+            for (const name in global.db) {
+                if (global.db[name]) {
+                    try {
+                        await global.db[name].destroy();
+                    } catch (destroyError) {
+                        await logMessage({
+                            message: `Error closing DB connection ${name}: ${destroyError.message}`,
+                            log_level: "error",
+                        });
+                    } finally {
+                        delete global.db[name];
+                    }
+                    await logMessage({
+                        message: `DB Connection ${name} released`,
+                        log_level: "info",
+                    });
+                }
+            }
+
             done();
         } catch (err) {
             await logMessage({
@@ -59,8 +102,26 @@ module.exports = async(job, done) => {
                 } catch (loggingError) {
                     await logMessage({
                         message: `Error occurred while logging job failure: ${loggingError.message}`,
-                        details: loggingError,
                         log_level: "error",
+                    });
+                }
+            }
+
+            for (const name in global.db) {
+                if (global.db[name]) {
+                    try {
+                        await global.db[name].destroy();
+                    } catch (destroyError) {
+                        await logMessage({
+                            message: `Error closing DB connection ${name}: ${destroyError.message}`,
+                            log_level: "error",
+                        });
+                    } finally {
+                        delete global.db[name];
+                    }
+                    await logMessage({
+                        message: `DB Connection ${name} released`,
+                        log_level: "debug",
                     });
                 }
             }
@@ -68,22 +129,32 @@ module.exports = async(job, done) => {
             done(err);
         }
     } catch (error) {
-        console.error(`Error occurred while processing job: ${error.message}`);
+        await logMessage({
+            message: `Job ${job.id} failed with error: ${error.message}`,
+            log_level: "error",
+        });
 
-        try {
-            await logMessage({
-                message: `Job ${job.id} failed with error: ${error.message}`,
-                log_level: "error",
-            });
+        if (bullLog) {
+            await job.log(`Job ${job.id} failed with error: ${error.message}`);
+        }
 
-            if (bullLog) {
-                await job.log(`Job ${job.id} failed with error: ${error.message}`);
+        for (const name in global.db) {
+            if (global.db[name]) {
+                try {
+                    await global.db[name].destroy();
+                } catch (destroyError) {
+                    await logMessage({
+                        message: `Error closing DB connection ${name}: ${destroyError.message}`,
+                        log_level: "error",
+                    });
+                } finally {
+                    delete global.db[name];
+                }
+                await logMessage({
+                    message: `DB Connection ${name} released`,
+                    log_level: "debug",
+                });
             }
-        } catch (loggingError) {
-            await logMessage({
-                message: `Error occurred while logging job failure: ${loggingError.message}`,
-                log_level: "error",
-            });
         }
 
         done(error);
