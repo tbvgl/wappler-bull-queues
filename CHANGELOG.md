@@ -1,3 +1,29 @@
+# [1.7.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.6.0...v1.7.0) (2023-06-01)
+
+
+### Features
+
+* Close db connection after sandboxed job ([aee996f](https://github.com/tbvgl/wappler-bull-queues/commit/aee996f5b9037e664345596d32ab1821a0d86026))
+
+# [1.6.0-release.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.6.0-release.1...v1.6.0-release.2) (2023-06-01)
+
+
+### Features
+
+* Close db connection after sandboxed job ([aee996f](https://github.com/tbvgl/wappler-bull-queues/commit/aee996f5b9037e664345596d32ab1821a0d86026))
+
+# [1.6.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.5.2...v1.6.0-release.1) (2023-05-22)
+
+
+### Bug Fixes
+
+* hjson formatting error ([687d15c](https://github.com/tbvgl/wappler-bull-queues/commit/687d15c51d401ea913b9ef6578a736c466758ff7))
+
+
+### Features
+
+* Allow socket events in bull jobs ([8a9766b](https://github.com/tbvgl/wappler-bull-queues/commit/8a9766b8363562176f4f8c76b98b6079a75bb605))
+
 ## [1.5.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.5.1...v1.5.2) (2023-05-20)
 
 
