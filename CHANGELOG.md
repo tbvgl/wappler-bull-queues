@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.7.1...v1.7.2) (2023-06-02)
+
+
+### Bug Fixes
+
+* new wappler version conflicts with ioredis ([4c36ea0](https://github.com/tbvgl/wappler-bull-queues/commit/4c36ea0164eed07933c1113be20a436c28cecd45))
+
 ## [1.7.2-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.7.1...v1.7.2-release.1) (2023-06-02)
 
 
