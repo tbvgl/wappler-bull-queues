@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.7.0...v1.7.1) (2023-06-02)
+
+
+### Bug Fixes
+
+* global socket ([a51d5d1](https://github.com/tbvgl/wappler-bull-queues/commit/a51d5d1cdf26a10b38eaa809f7da0e5947d0bfb2))
+
 ## [1.7.1-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.7.0...v1.7.1-release.1) (2023-06-02)
 
 
