@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.6.0...v1.7.0) (2023-06-01)
+
+
+### Features
+
+* Close db connection after sandboxed job ([aee996f](https://github.com/tbvgl/wappler-bull-queues/commit/aee996f5b9037e664345596d32ab1821a0d86026))
+
 # [1.6.0-release.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.6.0-release.1...v1.6.0-release.2) (2023-06-01)
 
 
