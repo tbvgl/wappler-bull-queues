@@ -16,46 +16,43 @@ if (process.env.REDIS_HOST || typeof global.redisClient !== "undefined") {
 
 function getRedisInstance(db) {
     return new ioredis({
-        port: process.env.REDIS_PORT || global.redisClient.options.port,
-        host: process.env.REDIS_HOST || global.redisClient.options.host,
+        port: process.env.REDIS_PORT ||
+            (global.redisClient ? global.redisClient.options.port : 6379),
+        host: process.env.REDIS_HOST ||
+            (global.redisClient ? global.redisClient.options.host : "localhost"),
         db: db || process.env.REDIS_BULL_QUEUE_DB || 2,
-        ...(process.env.REDIS_PASSWORD || global.redisClient.options.password ? {
-            password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
-        } : {}),
-        ...(process.env.REDIS_USER || global.redisClient.options.user ? { username: process.env.REDIS_USER || global.redisClient.options.user } : {}),
-        ...(process.env.REDIS_TLS || global.redisClient.options.tls ? { tls: {} } : {}),
+        password: process.env.REDIS_PASSWORD ||
+            (global.redisClient ? global.redisClient.options.password : undefined),
+        username: process.env.REDIS_USER ||
+            (global.redisClient ? global.redisClient.options.user : undefined),
+        tls: process.env.REDIS_TLS ||
+            (global.redisClient ? global.redisClient.options.tls : undefined),
     });
 }
 
 const defaultQueueOptions = {
     redis: {
-        port: process.env.REDIS_PORT || global.redisClient ?
-            global.redisClient.options.port : {},
+        port: process.env.REDIS_PORT ||
+            (global.redisClient ? global.redisClient.options.port : 6379),
         host: process.env.REDIS_HOST ||
-            (global.redisClient ?
-                (global.redisClient.options.host ?
-                    global.redisClient.options.host :
-                    global.redisClient.options.socket.host) :
-                {}),
-
-        db: process.env.REDIS_BULL_QUEUE_DB || 2,
-        ...(process.env.REDIS_PASSWORD || global.redisClient ?
-            global.redisClient.options.password ? {
-                password: process.env.REDIS_PASSWORD || global.redisClient.options.password,
-            } : {} : {}),
-        ...(process.env.REDIS_USER || global.redisClient ?
-            global.redisClient.options.user ? {
-                username: process.env.REDIS_USER || global.redisClient.options.user,
-            } : {} : {}),
-        ...(process.env.REDIS_TLS || global.redisClient ?
-            global.redisClient.options.tls ? { tls: {} } : {} : {}),
-        ...(process.env.REDIS_PREFIX ? { prefix: `{${process.env.REDIS_PREFIX}}` } : {}),
-        ...(process.env.REDIS_BULL_METRICS ? {
-            metrics: {
+            (global.redisClient ? global.redisClient.options.host : "localhost"),
+        db: process.env.REDIS_BULL_QUEUE_DB || 3,
+        password: process.env.REDIS_PASSWORD ||
+            (global.redisClient ? global.redisClient.options.password : undefined),
+        username: process.env.REDIS_USER ||
+            (global.redisClient ? global.redisClient.options.user : undefined),
+        tls: process.env.REDIS_TLS ||
+            (global.redisClient ? global.redisClient.options.tls : undefined),
+        prefix: process.env.REDIS_PREFIX ?
+            `{${process.env.REDIS_PREFIX}}` :
+            undefined,
+        metrics: process.env.REDIS_BULL_METRICS ?
+            {
                 maxDataPoints: process.env.REDIS_BULL_METRICS_TIME ?
-                    Queue.utils.MetricsTime[process.env.REDIS_BULL_METRICS_TIME] : Queue.utils.MetricsTime.TWO_WEEKS,
-            },
-        } : {}),
+                    Queue.utils.MetricsTime[process.env.REDIS_BULL_METRICS_TIME] :
+                    Queue.utils.MetricsTime.TWO_WEEKS,
+            } :
+            undefined,
     },
 };
 
@@ -75,7 +72,6 @@ function setupQueue(queueName) {
 }
 
 exports.create_queue = async function(options) {
-
     options = this.parse(options);
     if (!redisReady) {
         await logMessage({ message: "No Redis connection", log_level: "error" });
@@ -687,7 +683,6 @@ exports.job_state = async function(options) {
 };
 
 exports.add_job_api = async function(options) {
-
     await logMessage({
         message: "Add job api start",
         log_level: "debug",
@@ -802,7 +797,9 @@ exports.add_job_api = async function(options) {
                 "parameter api_file is required."
             );
             let delay_ms = parseInt(this.parseOptional(options.delay_ms, "*", 0));
-            let serverName = (this.global.data.$_SERVER && this.global.data.$_SERVER.SERVER_NAME) || "localhost";
+            let serverName =
+                (this.global.data.$_SERVER && this.global.data.$_SERVER.SERVER_NAME) ||
+                "localhost";
 
             let base_url =
                 this.global.data.$_SERVER.REQUEST_PROTOCOL +
