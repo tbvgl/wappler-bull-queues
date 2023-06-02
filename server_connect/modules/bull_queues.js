@@ -31,8 +31,13 @@ const defaultQueueOptions = {
     redis: {
         port: process.env.REDIS_PORT || global.redisClient ?
             global.redisClient.options.port : {},
-        host: process.env.REDIS_HOST || global.redisClient ?
-            global.redisClient.options.host : {},
+        host: process.env.REDIS_HOST ||
+            (global.redisClient ?
+                (global.redisClient.options.host ?
+                    global.redisClient.options.host :
+                    global.redisClient.options.socket.host) :
+                {}),
+
         db: process.env.REDIS_BULL_QUEUE_DB || 2,
         ...(process.env.REDIS_PASSWORD || global.redisClient ?
             global.redisClient.options.password ? {
