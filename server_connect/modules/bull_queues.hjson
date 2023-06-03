@@ -245,6 +245,8 @@
             "serverDataBindings": true,
             "help": "Name of this queue to be referenced by other actions."
           },
+          
+          
           {
             "name": "limit_type",
             "optionName": "limit_type",
@@ -312,6 +314,14 @@
             "type": "boolean",
             "required": false,
             "help": "Automatically initialize the queue on application start."
+          },
+          {
+            "name": "same_thread",
+            "optionName": "same_thread",
+            "title": "Same Thread",
+            "type": "boolean",
+            "defaultValue": false,
+            "help": "Create the queue in the main thread. This is useful if you want to process jobs in the main thread.",
           }
         ]
       }

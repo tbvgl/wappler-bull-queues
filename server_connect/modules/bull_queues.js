@@ -44,15 +44,11 @@ const defaultQueueOptions = {
         tls: process.env.REDIS_TLS ||
             (global.redisClient ? global.redisClient.options.tls : undefined),
         prefix: process.env.REDIS_PREFIX ?
-            `{${process.env.REDIS_PREFIX}}` :
-            undefined,
-        metrics: process.env.REDIS_BULL_METRICS ?
-            {
-                maxDataPoints: process.env.REDIS_BULL_METRICS_TIME ?
-                    Queue.utils.MetricsTime[process.env.REDIS_BULL_METRICS_TIME] :
-                    Queue.utils.MetricsTime.TWO_WEEKS,
-            } :
-            undefined,
+            `{${process.env.REDIS_PREFIX}}` : undefined,
+        metrics: process.env.REDIS_BULL_METRICS ? {
+            maxDataPoints: process.env.REDIS_BULL_METRICS_TIME ?
+                Queue.utils.MetricsTime[process.env.REDIS_BULL_METRICS_TIME] : Queue.utils.MetricsTime.TWO_WEEKS,
+        } : undefined,
     },
 };
 
@@ -70,7 +66,7 @@ function setupQueue(queueName) {
         bullQueues[queueName] = new Queue(queueName, defaultQueueOptions);
     }
 }
-
+const { processJob } = require('./bull_processor_api.js');
 exports.create_queue = async function(options) {
     options = this.parse(options);
     if (!redisReady) {
@@ -149,7 +145,11 @@ exports.create_queue = async function(options) {
     bullQueues[queueName] = new Queue(queueName, queueOptions);
     processorTypes[queueName] = processor_type;
     workerCounts[queueName] = concurrent_jobs;
-    bullQueues[queueName].process("*", concurrent_jobs, processorPath);
+    if (options.same_thread) {
+        bullQueues[queueName].process("*", concurrent_jobs, processJob);
+    } else {
+        bullQueues[queueName].process("*", concurrent_jobs, processorPath);
+    }
 
     let jobscount = await bullQueues[queueName]
         .getJobCounts()
