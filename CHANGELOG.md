@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.0...v1.8.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* db released on main thread ([bed0cdd](https://github.com/tbvgl/wappler-bull-queues/commit/bed0cdd38562110e2ec862e05825305efcf3c5e3))
+
 ## [1.8.1-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.0...v1.8.1-release.1) (2023-06-06)
 
 
