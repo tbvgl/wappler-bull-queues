@@ -283,7 +283,6 @@
             "title": "Number of concurrent jobs",
             "type": "text",
             "required": false,
-            "defaultValue": 5,
             "serverDataBindings": true,
             "help": "How many jobs are allowed to be run in parallel."
           },
