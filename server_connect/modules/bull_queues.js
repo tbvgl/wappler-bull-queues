@@ -66,7 +66,7 @@ function setupQueue(queueName) {
         bullQueues[queueName] = new Queue(queueName, defaultQueueOptions);
     }
 }
-const { processJob } = require('./bull_processor_api.js');
+const { processJob } = require('./bull_processor.js');
 exports.create_queue = async function(options) {
     options = this.parse(options);
     if (!redisReady) {
@@ -109,7 +109,7 @@ exports.create_queue = async function(options) {
 
     let processor_type = "api";
     let processorPath = toSystemPath(
-        "/extensions/server_connect/modules/bull_processor_api.js"
+        "/extensions/server_connect/modules/bull_processor_sandboxed.js"
     );
 
     let concurrent_jobs = parseInt(
