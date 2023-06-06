@@ -1,3 +1,11 @@
+## [1.8.2-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.1...v1.8.2-release.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* autostart wrong default in ui ([d7ebc0d](https://github.com/tbvgl/wappler-bull-queues/commit/d7ebc0dba8c39816adeb318278fb5e9cccb5d44e))
+* wrong default concurrency in ui ([83d33e2](https://github.com/tbvgl/wappler-bull-queues/commit/83d33e2d0a326fd21e0374d884f6d632b837ed0b))
+
 ## [1.8.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.0...v1.8.1) (2023-06-06)
 
 
