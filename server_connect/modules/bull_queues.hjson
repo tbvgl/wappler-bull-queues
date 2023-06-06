@@ -312,6 +312,7 @@
             "optionName": "autoStart",
             "title": "Autostart",
             "type": "boolean",
+            "defaultValue": false,
             "required": false,
             "help": "Automatically initialize the queue on application start."
           },
