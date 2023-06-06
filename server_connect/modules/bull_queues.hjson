@@ -283,7 +283,6 @@
             "title": "Number of concurrent jobs",
             "type": "text",
             "required": false,
-            "defaultValue": 5,
             "serverDataBindings": true,
             "help": "How many jobs are allowed to be run in parallel."
           },
@@ -312,6 +311,7 @@
             "optionName": "autoStart",
             "title": "Autostart",
             "type": "boolean",
+            "defaultValue": false,
             "required": false,
             "help": "Automatically initialize the queue on application start."
           },
@@ -335,14 +335,6 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Add Job @@var(actionName)@@",
     "icon": "fas fa-plus-circle comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1",
-        "axios": "^0.25.0"
-      }
-    },
     "dataPickObject": true,
     "dataScheme": [
       {
