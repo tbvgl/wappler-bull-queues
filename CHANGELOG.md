@@ -1,3 +1,17 @@
+# [1.8.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.7.2...v1.8.0) (2023-06-03)
+
+
+### Features
+
+* Initialize queue in main thread ([4cdb4f6](https://github.com/tbvgl/wappler-bull-queues/commit/4cdb4f662c68affd74f3cf4291d3e60976c1cd3f))
+
+# [1.8.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.7.2...v1.8.0-release.1) (2023-06-03)
+
+
+### Features
+
+* Initialize queue in main thread ([4cdb4f6](https://github.com/tbvgl/wappler-bull-queues/commit/4cdb4f662c68affd74f3cf4291d3e60976c1cd3f))
+
 ## [1.7.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.7.1...v1.7.2) (2023-06-02)
 
 
