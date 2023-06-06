@@ -1,3 +1,10 @@
+## [1.8.2-release.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.2-release.1...v1.8.2-release.2) (2023-06-06)
+
+
+### Bug Fixes
+
+* unused modules ([472f7b7](https://github.com/tbvgl/wappler-bull-queues/commit/472f7b7e6c816737ae30db80331db2ef390f5d93))
+
 ## [1.8.2-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.1...v1.8.2-release.1) (2023-06-06)
 
 
