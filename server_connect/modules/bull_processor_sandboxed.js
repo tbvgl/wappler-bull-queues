@@ -2,7 +2,6 @@ const fs = require('fs-extra');
 const App = require('../../../lib/core/app');
 const { logMessage } = require("./advanced-logger");
 const { globals } = require('../../../lib/setup/config');
-//const { io } = require('../../../lib/server');
 const bullLog = process.env.LOG_BULL_JOBS ? process.env.LOG_BULL_JOBS === "enabled" : false;
 
 global.db = {};
@@ -120,7 +119,7 @@ module.exports = async(job, done) => {
                     }
                     await logMessage({
                         message: `DB Connection ${name} released`,
-                        log_level: "debug",
+                        log_level: "info",
                     });
                 }
             }
@@ -151,13 +150,10 @@ module.exports = async(job, done) => {
                 }
                 await logMessage({
                     message: `DB Connection ${name} released`,
-                    log_level: "debug",
+                    log_level: "info",
                 });
             }
         }
-
         done(error);
     }
 };
-
-module.exports.processJob = module.exports;
