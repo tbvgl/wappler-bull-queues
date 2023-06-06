@@ -335,14 +335,6 @@
     "groupIcon": "fas fa-skull-cow comp-exec",
     "title": "Add Job @@var(actionName)@@",
     "icon": "fas fa-plus-circle comp-exec",
-    "usedModules": {
-      "node": {
-        "bull": "^4.6.2",
-        "winston": "^3.8.2",
-        "winston-daily-rotate-file": "^4.7.1",
-        "axios": "^0.25.0"
-      }
-    },
     "dataPickObject": true,
     "dataScheme": [
       {
