@@ -1,3 +1,10 @@
+## [1.8.3-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.2...v1.8.3-release.1) (2023-06-07)
+
+
+### Bug Fixes
+
+* default global redis host fallback ([8f44e1a](https://github.com/tbvgl/wappler-bull-queues/commit/8f44e1ae3b027564c40d1f74840123e7033f62c5))
+
 ## [1.8.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.1...v1.8.2) (2023-06-06)
 
 
