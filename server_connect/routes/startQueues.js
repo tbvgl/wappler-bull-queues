@@ -6,7 +6,12 @@ const { logMessage } = require("../modules/advanced-logger");
 function getRedisInstance() {
     return new ioredis({
         port: process.env.REDIS_PORT || (global.redisClient ? global.redisClient.options.port : 6379),
-        host: process.env.REDIS_HOST || (global.redisClient ? global.redisClient.options.host : 'localhost'),
+        host: process.env.REDIS_HOST ||
+            (global.redisClient ?
+                (global.redisClient.options.host ?
+                    global.redisClient.options.host :
+                    global.redisClient.options.socket.host) :
+                "localhost"),
         db: process.env.REDIS_BULL_QUEUE_DB || 3,
         password: process.env.REDIS_PASSWORD || (global.redisClient ? global.redisClient.options.password : undefined),
         username: process.env.REDIS_USER || (global.redisClient ? global.redisClient.options.user : undefined),
