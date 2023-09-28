@@ -434,6 +434,17 @@
             "help": "Assign a priority to the job. Lower numbers have higher priority. Leave blank to avoid priority-based scheduling."
           },
           {
+            "name": "forward_post",
+            "optionName": "forward_post",
+            "title": "Forward Body",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "serverDataBindings": true,
+            "help": "If ticked, forward the full request body",
+            
+          },
+          {
             "name": "delay_ms",
             "optionName": "delay_ms",
             "title": "Minimum delay",
