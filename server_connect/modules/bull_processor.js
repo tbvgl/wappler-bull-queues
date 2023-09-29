@@ -44,7 +44,7 @@ module.exports = async (job, done) => {
           set(field, val) {},
         };
       };
-      
+
       let appBody = jobData; // use jobData as the default body
       if (jobData.body) {
         // if jobData contains body, merge it with jobData
@@ -52,6 +52,8 @@ module.exports = async (job, done) => {
         delete appBody.body; // remove the body property from appBody to avoid redundancy
       }
 
+      headers["bull_job_id"] = job.id;
+      appBody['bull_job_id'] = job.id;
       const app = new App(
         {
           method: `POST`,

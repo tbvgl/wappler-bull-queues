@@ -50,11 +50,12 @@ module.exports = async (job, done) => {
         appBody = { ...jobData, ...jobData.body };
         delete appBody.body;
       }
-
+      headers["bull_job_id"] = job.id;
+      appBody['bull_job_id'] = job.id;
       const app = new App(
         {
           method: `POST`,
-          body: appBody, 
+          body: appBody,
           session: session,
           cookies: {},
           signedCookies: {},
