@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.3...v1.9.0) (2023-09-28)
+
+
+### Features
+
+* Option to forward full body ([e69a20f](https://github.com/tbvgl/wappler-bull-queues/commit/e69a20f9b9ddbfe6432bae3a2784347040d8a7fb))
+
 <<<<<<< HEAD
 # [1.9.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.3-release.1...v1.9.0-release.1) (2023-09-28)
 
