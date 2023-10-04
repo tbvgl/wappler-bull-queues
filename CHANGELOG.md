@@ -1,3 +1,10 @@
+# [1.11.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.10.0...v1.11.0-release.1) (2023-10-04)
+
+
+### Features
+
+* Fail job by throwing an error if the response is >=500 ([9383b7c](https://github.com/tbvgl/wappler-bull-queues/commit/9383b7c43a652c6e689e1522cf70c316063fa2cd))
+
 # [1.10.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.9.0...v1.10.0) (2023-09-29)
 
 
