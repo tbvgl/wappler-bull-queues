@@ -35,21 +35,30 @@ module.exports = async (job, done) => {
 
     try {
       const createMockRes = () => {
+        let responseStatusCode = 200;  // Default status code
         return {
           status(n) {
+            responseStatusCode = n;
             return this;
           },
           send(data) {},
           json(data) {},
           set(field, val) {},
+          getStatusCode: function() {  // Ensure this function is defined properly
+            return responseStatusCode;
+          }
         };
       };
+      
 
       let appBody = jobData;
       if (jobData.body) {
         appBody = { ...jobData, ...jobData.body };
         delete appBody.body;
       }
+
+      const mockRes = createMockRes();
+
       headers["bull_job_id"] = job.id;
       appBody['bull_job_id'] = job.id;
       const app = new App(
@@ -62,11 +71,15 @@ module.exports = async (job, done) => {
           query: {},
           headers: headers,
         },
-        createMockRes()
+        mockRes
       );
 
       const actionFile = await fs.readJSON(`app/api/${action}.json`);
       await app.define(actionFile, true);
+
+      if (mockRes.getStatusCode() >= 500) {
+        throw new Error(`Triggered a ${mockRes.getStatusCode()} response`);
+      }
 
       await logMessage({
         message: `Job ${job.id} completed successfully`,

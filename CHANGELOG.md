@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.9.0...v1.10.0) (2023-09-29)
+
+
+### Features
+
+* Make bull_job_id available in headers and body ([3916745](https://github.com/tbvgl/wappler-bull-queues/commit/3916745968c3a107d72a9409d89537b88e53cfb4))
+
 # [1.10.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.9.0...v1.10.0-release.1) (2023-09-29)
 
 
