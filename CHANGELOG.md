@@ -1,9 +1,11 @@
-# [1.11.0-release.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.11.0-release.1...v1.11.0-release.2) (2024-02-02)
-
-
 ### Bug Fixes
 
-* job does not cancel immediately after 500 response ([fddc2fb](https://github.com/tbvgl/wappler-bull-queues/commit/fddc2fbe8e3ad994ba40d970d7badf9d125f0ce1))
+# [1.11.0](https://github.com/tbvgl/wappler-bull-queues/compare/v1.10.0...v1.11.0) (2023-10-04)
+
+
+### Features
+
+* Fail job by throwing an error if the response is >=500 ([9383b7c](https://github.com/tbvgl/wappler-bull-queues/commit/9383b7c43a652c6e689e1522cf70c316063fa2cd))
 
 # [1.11.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.10.0...v1.11.0-release.1) (2023-10-04)
 
@@ -32,22 +34,7 @@
 ### Features
 
 * Option to forward full body ([e69a20f](https://github.com/tbvgl/wappler-bull-queues/commit/e69a20f9b9ddbfe6432bae3a2784347040d8a7fb))
-
-<<<<<<< HEAD
-# [1.9.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.3-release.1...v1.9.0-release.1) (2023-09-28)
-
-
-### Features
-
-* Option to forward full body ([e69a20f](https://github.com/tbvgl/wappler-bull-queues/commit/e69a20f9b9ddbfe6432bae3a2784347040d8a7fb))
-=======
-## [1.8.3](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.2...v1.8.3) (2023-06-07)
-
-
-### Bug Fixes
-
-* default global redis host fallback ([8f44e1a](https://github.com/tbvgl/wappler-bull-queues/commit/8f44e1ae3b027564c40d1f74840123e7033f62c5))
->>>>>>> master
+* 
 
 ## [1.8.3-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.8.2...v1.8.3-release.1) (2023-06-07)
 
