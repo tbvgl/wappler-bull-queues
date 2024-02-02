@@ -1,3 +1,10 @@
+# [1.11.0-release.2](https://github.com/tbvgl/wappler-bull-queues/compare/v1.11.0-release.1...v1.11.0-release.2) (2024-02-02)
+
+
+### Bug Fixes
+
+* job does not cancel immediately after 500 response ([fddc2fb](https://github.com/tbvgl/wappler-bull-queues/commit/fddc2fbe8e3ad994ba40d970d7badf9d125f0ce1))
+
 # [1.11.0-release.1](https://github.com/tbvgl/wappler-bull-queues/compare/v1.10.0...v1.11.0-release.1) (2023-10-04)
 
 
