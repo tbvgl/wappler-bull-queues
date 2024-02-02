@@ -41,15 +41,22 @@ module.exports = async (job, done) => {
             responseStatusCode = n;
             return this;
           },
-          send(data) {},
-          json(data) {},
+          send(data) {
+            if (responseStatusCode >= 500) {
+              throw new Error(`Triggered a ${responseStatusCode} response`);
+            }
+          },
+          json(data) {
+            if (responseStatusCode >= 500) {
+              throw new Error(`Triggered a ${responseStatusCode} response`);
+            }
+          },
           set(field, val) {},
-          getStatusCode: function() {  // Ensure this function is defined properly
+          getStatusCode: function() {
             return responseStatusCode;
           }
         };
       };
-      
 
       let appBody = jobData;
       if (jobData.body) {
@@ -76,10 +83,6 @@ module.exports = async (job, done) => {
 
       const actionFile = await fs.readJSON(`app/api/${action}.json`);
       await app.define(actionFile, true);
-
-      if (mockRes.getStatusCode() >= 500) {
-        throw new Error(`Triggered a ${mockRes.getStatusCode()} response`);
-      }
 
       await logMessage({
         message: `Job ${job.id} completed successfully`,
@@ -111,6 +114,7 @@ module.exports = async (job, done) => {
 
       done();
     } catch (err) {
+      // Handle errors, including 500 responses
       await logMessage({
         message: `Job ${job.id} failed with error: ${err.message}`,
         details: err,

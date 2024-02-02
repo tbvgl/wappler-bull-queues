@@ -35,24 +35,33 @@ module.exports = async (job, done) => {
 
     try {
       const createMockRes = () => {
+        let responseStatusCode = 200;  // Default status code
         return {
           status(n) {
+            responseStatusCode = n;
             return this;
           },
-          send(data) {},
-          json(data) {},
+          send(data) {
+            if (responseStatusCode >= 500) {
+              throw new Error(`Triggered a ${responseStatusCode} response`);
+            }
+          },
+          json(data) {
+            if (responseStatusCode >= 500) {
+              throw new Error(`Triggered a ${responseStatusCode} response`);
+            }
+          },
           set(field, val) {},
-          getStatusCode: function() {  // Ensure this function is defined properly
+          getStatusCode: function() {
             return responseStatusCode;
           }
         };
       };
 
-      let appBody = jobData; // use jobData as the default body
+      let appBody = jobData;
       if (jobData.body) {
-        // if jobData contains body, merge it with jobData
-        appBody = { ...jobData, ...jobData.body }; // merge body into jobData
-        delete appBody.body; // remove the body property from appBody to avoid redundancy
+        appBody = { ...jobData, ...jobData.body };
+        delete appBody.body;
       }
 
       const mockRes = createMockRes();
@@ -62,7 +71,7 @@ module.exports = async (job, done) => {
       const app = new App(
         {
           method: `POST`,
-          body: appBody, // use the merged appBody as the body for App
+          body: appBody,
           session: session,
           cookies: {},
           signedCookies: {},
@@ -88,8 +97,29 @@ module.exports = async (job, done) => {
         await job.log(`Job ${job.id} completed successfully.`);
       }
 
+      // Closing DB connections
+      for (const name in global.db) {
+        if (global.db[name]) {
+          try {
+            await global.db[name].destroy();
+          } catch (destroyError) {
+            await logMessage({
+              message: `Error closing DB connection ${name}: ${destroyError.message}`,
+              log_level: "error",
+            });
+          } finally {
+            delete global.db[name];
+          }
+          await logMessage({
+            message: `DB Connection ${name} released`,
+            log_level: "info",
+          });
+        }
+      }
+
       done();
     } catch (err) {
+      // Handle errors, including 500 responses
       await logMessage({
         message: `Job ${job.id} failed with error: ${err.message}`,
         details: err,
@@ -107,6 +137,26 @@ module.exports = async (job, done) => {
         }
       }
 
+      // Closing DB connections on error
+      for (const name in global.db) {
+        if (global.db[name]) {
+          try {
+            await global.db[name].destroy();
+          } catch (destroyError) {
+            await logMessage({
+              message: `Error closing DB connection ${name}: ${destroyError.message}`,
+              log_level: "error",
+            });
+          } finally {
+            delete global.db[name];
+          }
+          await logMessage({
+            message: `DB Connection ${name} released`,
+            log_level: "info",
+          });
+        }
+      }
+
       done(err);
     }
   } catch (error) {
@@ -117,6 +167,26 @@ module.exports = async (job, done) => {
 
     if (bullLog) {
       await job.log(`Job ${job.id} failed with error: ${error.message}`);
+    }
+
+    // Closing DB connections on catch block error
+    for (const name in global.db) {
+      if (global.db[name]) {
+        try {
+          await global.db[name].destroy();
+        } catch (destroyError) {
+          await logMessage({
+            message: `Error closing DB connection ${name}: ${destroyError.message}`,
+            log_level: "error",
+          });
+        } finally {
+          delete global.db[name];
+        }
+        await logMessage({
+          message: `DB Connection ${name} released`,
+          log_level: "info",
+        });
+      }
     }
     done(error);
   }
